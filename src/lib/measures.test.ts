@@ -266,3 +266,41 @@ describe('multiple LCAs', () => {
     expect(leacockChodorow(g, 'C', 'D', { maxDepth: 2 })).toBeCloseTo(Math.log(4) - Math.log(3), 5);
   });
 });
+
+// Tests for predicate filtering
+describe('predicate filtering', () => {
+  const createMultiPredicateTaxonomy = () => {
+    const g = new MultiDirectedGraph();
+    ['A', 'B', 'C', 'D'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'B', { predicate: 'is-a' });
+    g.addEdge('B', 'C', { predicate: 'is-a' });
+    g.addEdge('C', 'D', { predicate: 'is-a' });
+    g.addEdge('A', 'D', { predicate: 'part-of' });
+    return g;
+  };
+
+  /*
+   * Multi-predicate taxonomy:
+   *   A -> B -> C -> D  (is-a edges, length 3)
+   *   A -> D (part-of edge, length 1)
+   *
+   * With is-a filter: path A to D is A-B-C-D (length 3)
+   * With part-of filter: path A to D is A-D (length 1)
+   */
+
+  it('filters edges by predicate for shortestPath', () => {
+    const g = createMultiPredicateTaxonomy();
+    // With is-a filter: path A->D is A-B-C-D (length 3)
+    // With part-of filter: path A->D is A-D (length 1)
+    expect(shortestPath(g, 'A', 'D', { predicates: 'is-a' })).toBe(3);
+    expect(shortestPath(g, 'A', 'D', { predicates: 'part-of' })).toBe(1);
+  });
+
+  it('radaSimilarity respects predicate filter', () => {
+    const g = createMultiPredicateTaxonomy();
+    const simIsA = radaSimilarity(g, 'A', 'D', { predicates: 'is-a' });
+    const simPartOf = radaSimilarity(g, 'A', 'D', { predicates: 'part-of' });
+    expect(simIsA).toBeCloseTo(1/4, 5); // path = 3, sim = 1/(1+3) = 1/4
+    expect(simPartOf).toBeCloseTo(1/2, 5); // path = 1, sim = 1/(1+1) = 1/2
+  });
+});
