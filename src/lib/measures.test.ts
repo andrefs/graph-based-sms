@@ -191,3 +191,28 @@ describe('leacockChodorow', () => {
     expect(leacockChodorow(g, 'dog', 'cat')).toBe(0);
   });
 });
+
+// Additional tests for hirstStOnge direction changes
+describe('hirstStOnge direction changes', () => {
+  it('counts 0 direction changes for upward-only path', () => {
+    const g = new MultiDirectedGraph();
+    ['A', 'B', 'C'].forEach(n => g.addNode(n));
+    g.addEdge('B', 'A', { predicate: 'is-a' });
+    g.addEdge('C', 'B', { predicate: 'is-a' });
+    // Path C -> B -> A: all UP, 0 changes
+    // Score: 8 - 2 - 1*0 = 6
+    expect(hirstStOnge(g, 'C', 'A', { C: 8, k: 1 })).toBe(6);
+  });
+
+  it('counts 1 direction change for UP then DOWN path', () => {
+    const g = new MultiDirectedGraph();
+    ['root', 'A', 'B', 'C', 'D'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'root', { predicate: 'is-a' });
+    g.addEdge('B', 'root', { predicate: 'is-a' });
+    g.addEdge('C', 'A', { predicate: 'is-a' });
+    g.addEdge('D', 'B', { predicate: 'is-a' });
+    // Path C -> A -> root -> B -> D: UP, UP, DOWN, DOWN (1 change)
+    // Score: 8 - 4 - 1*1 = 3
+    expect(hirstStOnge(g, 'C', 'D', { C: 8, k: 1, maxLength: 5 })).toBe(3);
+  });
+});
