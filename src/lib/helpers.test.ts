@@ -193,4 +193,39 @@ describe('getPathLengthToAncestor', () => {
     const g = createTaxonomy();
     expect(getPathLengthToAncestor(g, 'dog', 'nonexistent')).toBeNull();
   });
+
+  it('returns 0 for same node', () => {
+    const g = createTaxonomy();
+    expect(getPathLengthToAncestor(g, 'dog', 'dog')).toBe(0);
+  });
+});
+
+describe('findLCAs edge cases', () => {
+  const createTaxonomy = () => {
+    const g = new Graph();
+    ['animal', 'mammal', 'bird', 'dog', 'cat', 'penguin'].forEach(n => g.addNode(n));
+    g.addEdge('mammal', 'animal', { predicate: 'is-a' });
+    g.addEdge('bird', 'animal', { predicate: 'is-a' });
+    g.addEdge('dog', 'mammal', { predicate: 'is-a' });
+    g.addEdge('cat', 'mammal', { predicate: 'is-a' });
+    g.addEdge('penguin', 'bird', { predicate: 'is-a' });
+    return g;
+  };
+
+  it('returns node itself when comparing same node', () => {
+    const g = createTaxonomy();
+    const lcas = findLCAs(g, 'dog', 'dog');
+    expect(lcas).toContain('dog');
+  });
+
+  it('finds multiple LCAs in diamond graph', () => {
+    const g = new Graph();
+    ['root', 'A', 'B', 'C'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'root', { predicate: 'is-a' });
+    g.addEdge('B', 'root', { predicate: 'is-a' });
+    g.addEdge('C', 'A', { predicate: 'is-a' });
+    g.addEdge('C', 'B', { predicate: 'is-a' });
+    const lcas = findLCAs(g, 'A', 'B');
+    expect(lcas).toContain('root');
+  });
 });
