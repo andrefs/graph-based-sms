@@ -216,3 +216,53 @@ describe('hirstStOnge direction changes', () => {
     expect(hirstStOnge(g, 'C', 'D', { C: 8, k: 1, maxLength: 5 })).toBe(3);
   });
 });
+
+// Tests for multiple LCA scenarios
+describe('multiple LCAs', () => {
+  const createDiamondTaxonomy = () => {
+    const g = new MultiDirectedGraph();
+    ['root', 'A', 'B', 'C', 'D'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'root', { predicate: 'is-a' });
+    g.addEdge('B', 'root', { predicate: 'is-a' });
+    g.addEdge('C', 'A', { predicate: 'is-a' });
+    g.addEdge('C', 'B', { predicate: 'is-a' });
+    g.addEdge('D', 'A', { predicate: 'is-a' });
+    g.addEdge('D', 'B', { predicate: 'is-a' });
+    return g;
+  };
+
+  /*
+   * Diamond taxonomy:
+   *       root
+   *       ^  ^
+   *      /    \
+   *     A      B
+   *      ^    ^
+   *       \  /
+   *        C     (C has two parents: A and B)
+   *       / \
+   *      D   (D also has two parents: A and B)
+   *
+   * For (C, D): LCAs = {A, B, root}
+   * A and B are at depth 1, root at depth 0
+   */
+
+  it('wuPalmer selects best LCA (highest depth)', () => {
+    const g = createDiamondTaxonomy();
+    // C and D share LCAs: A, B (depth 1), root (depth 0)
+    // Best: A or B with depth 1
+    // path(C,A) = 1, path(D,A) = 1
+    // score = 2*1 / (2*1 + 1 + 1) = 2/4 = 0.5
+    expect(wuPalmer(g, 'C', 'D')).toBeCloseTo(0.5, 5);
+  });
+
+  it('leacockChodorow selects shortest path through any LCA', () => {
+    const g = createDiamondTaxonomy();
+    // Through A: path = 1 + 1 = 2, N = 3
+    // Through B: path = 1 + 1 = 2, N = 3
+    // Through root: path = 2 + 2 = 4, N = 5
+    // Shortest: 2, N = 3
+    // Score: log(2*2) - log(3) = log(4) - log(3)
+    expect(leacockChodorow(g, 'C', 'D', { maxDepth: 2 })).toBeCloseTo(Math.log(4) - Math.log(3), 5);
+  });
+});
