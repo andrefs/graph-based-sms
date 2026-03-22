@@ -29,7 +29,10 @@ export const leacockChodorow: MeasureFunction = (graph, concept1, concept2, opti
     return 0;
   }
 
+  // N = cardinality of the union of nodes in shortest paths sp(c1, LCA) and sp(c2, LCA)
+  // For trees where paths don't share intermediate nodes, N = shortestPath + 1
+  // (number of edges + 1 gives the number of nodes in the path)
   const n = shortestPath + 1;
-  
+
   return Math.log(2 * maxDepth) - Math.log(n);
 };
