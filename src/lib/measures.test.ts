@@ -304,3 +304,44 @@ describe('predicate filtering', () => {
     expect(simPartOf).toBeCloseTo(1/2, 5); // path = 1, sim = 1/(1+1) = 1/2
   });
 });
+
+// Tests for edge cases and boundary conditions
+describe('edge cases', () => {
+  it('handles single-node graph for all measures', () => {
+    const g = new MultiDirectedGraph();
+    g.addNode('only');
+    expect(shortestPath(g, 'only', 'only')).toBe(0);
+    expect(radaSimilarity(g, 'only', 'only')).toBe(1);
+    expect(wuPalmer(g, 'only', 'only')).toBe(1);
+    expect(leacockChodorow(g, 'only', 'only', { maxDepth: 1 })).toBeCloseTo(Math.log(2), 5);
+    expect(hirstStOnge(g, 'only', 'only')).toBe(8);
+  });
+
+  it('handles maxDepth = 0 for Resnik Edge', () => {
+    const g = createTaxonomy();
+    expect(resnikEdge(g, 'dog', 'cat', { maxDepth: 0 })).toBe(-2); // 2*0 - 2
+  });
+
+  it('handles maxDepth = 1 for Leacock-Chodorow', () => {
+    const g = createTaxonomy();
+    // log(2*1) - log(N) = log(2) - log(3)
+    expect(leacockChodorow(g, 'dog', 'cat', { maxDepth: 1 })).toBeCloseTo(Math.log(2) - Math.log(3), 5);
+  });
+
+  it('returns 0 when maxLength exceeded for Hirst-St-Onge', () => {
+    const g = createTaxonomy();
+    // Path dog -> penguin has length 4, maxLength = 2
+    expect(hirstStOnge(g, 'dog', 'penguin', { C: 8, k: 1, maxLength: 2 })).toBe(0);
+  });
+
+  it('handles cycle detection in Hirst-St-Onge', () => {
+    const g = new MultiDirectedGraph();
+    ['A', 'B', 'C'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'B', { predicate: 'is-a' });
+    g.addEdge('B', 'C', { predicate: 'is-a' });
+    g.addEdge('C', 'A', { predicate: 'is-a' });
+    // Should still find path without infinite loop
+    const result = hirstStOnge(g, 'A', 'C', { C: 8, k: 1, maxLength: 5 });
+    expect(result).toBeGreaterThan(0);
+  });
+});
