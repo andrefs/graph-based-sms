@@ -15,9 +15,14 @@ export const wuPalmer: MeasureFunction = (graph, concept1, concept2, options = {
     const path1 = getPathLengthToAncestor(graph, concept1, lca, options.predicates);
     const path2 = getPathLengthToAncestor(graph, concept2, lca, options.predicates);
 
-    if (depthLCA > 0 && path1 !== null && path2 !== null) {
-      const score = (2 * depthLCA) / (2 * depthLCA + path1 + path2);
-      bestScore = Math.max(bestScore, score);
+    if (path1 !== null && path2 !== null) {
+      const denominator = 2 * depthLCA + path1 + path2;
+      if (denominator === 0) {
+        bestScore = 1; // Same node at root
+      } else {
+        const score = (2 * depthLCA) / denominator;
+        bestScore = Math.max(bestScore, score);
+      }
     }
   }
 

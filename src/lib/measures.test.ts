@@ -168,6 +168,14 @@ describe('radaSimilarity', () => {
   });
 });
 
+// Additional test for wuPalmer root node self-similarity
+describe('wuPalmer', () => {
+  it('returns 1 for root node self-similarity', () => {
+    const g = createTaxonomy();
+    expect(wuPalmer(g, 'animal', 'animal')).toBe(1);
+  });
+});
+
 // Additional test for resnikEdge without maxDepth
 describe('resnikEdge', () => {
   it('returns 0 without maxDepth', () => {
