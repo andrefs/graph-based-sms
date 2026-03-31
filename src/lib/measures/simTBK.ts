@@ -44,11 +44,13 @@ export const simTBK: MeasureFunction = (graph, concept1, concept2, options = {})
 
   for (const lca of lcas) {
     const depthLCA = getDepth(graph, lca, options.predicates);
+    const path1 = Math.abs(depth1 - depthLCA);
+    const path2 = Math.abs(depth2 - depthLCA);
 
-    if (depthLCA > 0) {
-      const N = depthLCA;
+    if (depthLCA > 0 && path1 !== null && path2 !== null) {
       const N1 = depth1;
       const N2 = depth2;
+      const N = depthLCA;
 
       const wuPalmerFactor = (2 * N) / (N1 + N2);
       const PF = (1 - lambda) * (Math.min(N1, N2) - N) + lambda * (1 / (Math.abs(N1 - N2) + 1));
