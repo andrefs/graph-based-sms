@@ -99,7 +99,7 @@ A variation of Wu-Palmer with different normalization:
 
 $$\mathrm{m(c_1,c_2)} = \frac{depth(LCS(c_1,c_2))}{\mathrm{length}(\mathrm{sp}(c_1,LCS(c_1,c_2))) + \mathrm{length}(\mathrm{sp}(c_2,LCS(c_1,c_2))) + depth(LCS(c_1,c_2))}$$
 
-**Source:** Equation (2) in the third page in Pekar and Staab (2002). Also in Equation (3.17) in p. 89 in Harispe et al. (2015).
+**Source:** Equation (2) in the third page in Pekar and Staab (2002). Also in Equation (3.17), p. 89 in Harispe et al. (2015).
 
 
 #### Zhong
@@ -112,7 +112,7 @@ where:
 
 - $k : {k\in \mathbb{R}∣k>1}$ defines the contribution of the depth
 
-**Source:** Unnumbered equation on the fifth page in Zhong et al. (2002).
+**Source:** Unnumbered equation on the fifth page in Zhong et al. (2002). Also Equation (3.18), p. 90 in Harispe et al. (2015).
 
 #### Leacock-Chodorow
 
@@ -137,8 +137,7 @@ where:
 - $k$ is a constant for weighting direction changes (default: 1)
 - $d$ is the number of direction changes in the path
 
-**Source:** Unnumbered equation in p.4 in Hirst & St-Onge (1998). Also Equation (2) in 
-p. 4 in Slimani (2013).
+**Source:** Unnumbered equation in p.4 in Hirst & St-Onge (1998). Also Equation (2), p. 4 in Slimani (2013).
 
 #### Nguyen and Al-Mubaid
 
@@ -151,8 +150,7 @@ where:
 - $D$ is the depth of the taxonomy
 - $d$ is the depth of $LCS(c_1, c_2)$
 
-**Source:** Equation (1) in p.625 in Nguyen and Al-Mubaid (2006). Also Equation (3) in 
-p. 884 in McInnes et al. (2014).
+**Source:** Equation (1) in p.625 in Nguyen and Al-Mubaid (2006). Also Equation (4), p. 884 in McInnes et al. (2014).
 
 ### Feature-based
 
@@ -166,7 +164,8 @@ where:
 
 - $T(c_i)$ is the set of superconcepts of $c_i$
 
-**Source:** Equation (14) in p. 122 in Batet et al. (2011).
+**Source:** Equation (14) in p. 122 in Batet et al. (2011). Also Equation (5), p. 884 in McInnes et al. (2014).
+
 
 
 ## Options
@@ -195,7 +194,7 @@ Additional options for Hirst-St-Onge:
 - [9] G. Hirst and D. St-Onge, "Lexical Chains as Representations of Context for the Detection and Correction of Malapropisms," WordNet: An electronic lexical database, vol. 305, pp. 305–332, 1998.
 - [10] H. A. Nguyen and H. Al-Mubaid, "New ontology-based semantic similarity measure for the biomedical domain," in 2006 IEEE International Conference on Granular Computing, pp. 623–628, 2006.
 - [11] B. T. McInnes, T. Pedersen, Y. Liu, G. B. Melton, and S. V. Pakhomov, "U-path: An undirected path-based measure of semantic similarity," in AMIA Annual Symposium Proceedings, vol. 2014, p. 882, 2014.
-- [12] T. Slimani, "Description and evaluation of semantic similarity measures approaches," arXiv preprint arXiv:1310.8059, 2013.
+- [12] T. Slimani, "Description and Evaluation of Semantic Similarity Measures Approaches," International Journal of Computer Applications, vol. 80, no. 10, pp. 25–33, 2013.
 - [13] M. Batet, D. Sánchez, and A. Valls, "An Ontology-Based Measure to Compute Semantic Similarity in Biomedicine," Journal of biomedical informatics, vol. 44, no. 1, pp. 118–125, 2011.
 - [14] V. Pekar and S. Staab, "Taxonomy learning-factoring the structure of a taxonomy into a semantic classification decision," in COLING 2002: The 19th International Conference on Computational Linguistics, 2002.
 - [15] J. Zhong, H. Zhu, J. Li, and Y. Yu, "Conceptual graph matching for semantic search," in International Conference on Conceptual Structures, pp. 92–106, 2002.
