@@ -1,5 +1,23 @@
 import type { ExtraOptions, MeasureFunction } from '../types';
 import { getDepth, findLCAs, getAncestorSet } from '../helpers';
+import { MultiDirectedGraph } from 'graphology';
+
+export function computeLambda(
+  graph: MultiDirectedGraph,
+  concept1: string,
+  concept2: string,
+  predicates?: string | string[]
+): number {
+  if (concept1 === concept2) {
+    return 1;
+  }
+
+  const ancestors1 = getAncestorSet(graph, concept1, predicates);
+  const ancestors2 = getAncestorSet(graph, concept2, predicates);
+
+  const isSameHierarchy = ancestors1.has(concept2) || ancestors2.has(concept1);
+  return isSameHierarchy ? 0 : 1;
+}
 
 export const simTBK: MeasureFunction = (graph, concept1, concept2, options = {}) => {
   const lcas = findLCAs(graph, concept1, concept2, options.predicates);
@@ -15,17 +33,11 @@ export const simTBK: MeasureFunction = (graph, concept1, concept2, options = {})
     return 0;
   }
 
-  const ancestors1 = getAncestorSet(graph, concept1, options.predicates);
-  const ancestors2 = getAncestorSet(graph, concept2, options.predicates);
-
   let lambda: number;
   if (options.lambda !== undefined) {
     lambda = options.lambda;
-  } else if (concept1 === concept2) {
-    lambda = 1;
   } else {
-    const isSameHierarchy = ancestors1.has(concept2) || ancestors2.has(concept1);
-    lambda = isSameHierarchy ? 0 : 1;
+    lambda = computeLambda(graph, concept1, concept2, options.predicates);
   }
 
   let bestScore = 0;

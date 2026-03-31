@@ -12,6 +12,7 @@ import {
   _batetCommonInfo,
   zhong,
   simTBK,
+  computeLambda,
 } from './measures';
 
 const createTaxonomy = () => {
@@ -345,5 +346,35 @@ describe('simTBK', () => {
   it('handles nonexistent nodes gracefully', () => {
     const g = createTaxonomy();
     expect(simTBK(g, 'nonexistent1', 'nonexistent2')).toBe(0);
+  });
+});
+
+describe('computeLambda', () => {
+  const g = createTaxonomy();
+
+  it('returns 1 for same node', () => {
+    expect(computeLambda(g, 'dog', 'dog')).toBe(1);
+  });
+
+  it('returns 0 for parent-child (same hierarchy)', () => {
+    expect(computeLambda(g, 'mammal', 'dog')).toBe(0);
+  });
+
+  it('returns 0 for child-parent (same hierarchy)', () => {
+    expect(computeLambda(g, 'dog', 'mammal')).toBe(0);
+  });
+
+  it('returns 1 for siblings (neighborhood)', () => {
+    expect(computeLambda(g, 'dog', 'cat')).toBe(1);
+  });
+
+  it('returns 1 for cousins (neighborhood)', () => {
+    expect(computeLambda(g, 'dog', 'penguin')).toBe(1);
+  });
+
+  it('returns 1 for disconnected nodes', () => {
+    const g = createTaxonomy();
+    g.addNode('plant');
+    expect(computeLambda(g, 'dog', 'plant')).toBe(1);
   });
 });
