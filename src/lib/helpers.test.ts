@@ -6,6 +6,7 @@ import {
   getDepth,
   findLCAs,
   getPathLengthToAncestor,
+  getAncestorSet,
 } from './helpers';
 
 describe('bfsShortestPath', () => {
@@ -192,5 +193,56 @@ describe('getPathLengthToAncestor', () => {
   it('returns null for nonexistent ancestor', () => {
     const g = createTaxonomy();
     expect(getPathLengthToAncestor(g, 'dog', 'nonexistent')).toBeNull();
+  });
+});
+
+describe('getAncestorSet', () => {
+  const createTaxonomy = () => {
+    const g = new Graph();
+    ['animal', 'mammal', 'bird', 'dog', 'cat', 'penguin'].forEach(n => g.addNode(n));
+    g.addEdge('mammal', 'animal', { predicate: 'is-a' });
+    g.addEdge('bird', 'animal', { predicate: 'is-a' });
+    g.addEdge('dog', 'mammal', { predicate: 'is-a' });
+    g.addEdge('cat', 'mammal', { predicate: 'is-a' });
+    g.addEdge('penguin', 'bird', { predicate: 'is-a' });
+    return g;
+  };
+
+  it('returns set containing node itself', () => {
+    const g = createTaxonomy();
+    const result = getAncestorSet(g, 'dog');
+    expect(result).toContain('dog');
+  });
+
+  it('returns all ancestors including self', () => {
+    const g = createTaxonomy();
+    const result = getAncestorSet(g, 'dog');
+    expect(result).toContain('dog');
+    expect(result).toContain('mammal');
+    expect(result).toContain('animal');
+  });
+
+  it('returns root only for root node', () => {
+    const g = createTaxonomy();
+    const result = getAncestorSet(g, 'animal');
+    expect(result).toEqual(new Set(['animal']));
+  });
+
+  it('returns empty set for nonexistent node', () => {
+    const g = createTaxonomy();
+    const result = getAncestorSet(g, 'nonexistent');
+    expect(result).toEqual(new Set());
+  });
+
+  it('filters by predicates', () => {
+    const g = createTaxonomy();
+    g.addNode('feline');
+    g.addEdge('feline', 'mammal', { predicate: 'related-to' });
+    g.addEdge('cat', 'feline', { predicate: 'is-a' });
+    const result = getAncestorSet(g, 'cat', 'is-a');
+    expect(result).toContain('cat');
+    expect(result).toContain('feline');
+    expect(result).toContain('mammal');
+    expect(result).toContain('animal');
   });
 });

@@ -135,7 +135,7 @@ p. 884 in McInnes et al. (2014).
 
 #### Batet et al.
 
-This measure considers that the number of shared *superconcepts* an indication of proximity, and the amount of non-shared *superconcepts* as an indication of distance. 
+This measure considers that the number of shared *superconcepts* (ancestors) an indication of proximity, and the amount of non-shared *superconcepts* as an indication of distance. 
 
 $$\mathrm{m(c_1,c_2) = -log_2 \frac{|T(c_1) \cup  T(c_2)|-|T(c_1)\cap T(c_2)|}{|T(c_1) \cup  T(c_2)|}}$$
 

@@ -7,6 +7,7 @@ import {
   wuPalmer,
   leacockChodorow,
   hirstStOnge,
+  batet,
 } from './measures';
 
 const createTaxonomy = () => {
@@ -181,5 +182,51 @@ describe('leacockChodorow', () => {
   it('returns 0 without maxDepth', () => {
     const g = createTaxonomy();
     expect(leacockChodorow(g, 'dog', 'cat')).toBe(0);
+  });
+});
+
+// Tests for batet
+describe('batet', () => {
+  const g = createTaxonomy();
+
+  it('returns 0 for same node', () => {
+    expect(batet(g, 'dog', 'dog')).toBe(0);
+  });
+
+  it('returns expected value for siblings', () => {
+    const result = batet(g, 'dog', 'cat');
+    const dogAncestors = new Set(['dog', 'mammal', 'animal']);
+    const catAncestors = new Set(['cat', 'mammal', 'animal']);
+    const union = new Set([...dogAncestors, ...catAncestors]);
+    const intersection = new Set([...dogAncestors].filter(x => catAncestors.has(x)));
+    const expected = -Math.log2((union.size - intersection.size) / union.size);
+    expect(result).toBeCloseTo(expected, 5);
+  });
+
+  it('returns expected value for cousins', () => {
+    const result = batet(g, 'dog', 'penguin');
+    const dogAncestors = new Set(['dog', 'mammal', 'animal']);
+    const penguinAncestors = new Set(['penguin', 'bird', 'animal']);
+    const union = new Set([...dogAncestors, ...penguinAncestors]);
+    const intersection = new Set([...dogAncestors].filter(x => penguinAncestors.has(x)));
+    const expected = -Math.log2((union.size - intersection.size) / union.size);
+    expect(result).toBeCloseTo(expected, 5);
+  });
+
+  it('returns 0 when no path exists', () => {
+    const g = createTaxonomy();
+    g.addNode('plant');
+    expect(batet(g, 'dog', 'plant')).toBe(0);
+  });
+
+  it('handles nonexistent nodes gracefully', () => {
+    const g = createTaxonomy();
+    expect(batet(g, 'nonexistent1', 'nonexistent2')).toBe(0);
+  });
+
+  it('handles single node graph', () => {
+    const g = new MultiDirectedGraph();
+    g.addNode('only');
+    expect(batet(g, 'only', 'only')).toBe(0);
   });
 });

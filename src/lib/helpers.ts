@@ -181,6 +181,44 @@ export function findLCAs(
   return Array.from(lcas);
 }
 
+export function getAncestorSet(
+  graph: MultiDirectedGraph,
+  node: string,
+  predicates?: string | string[]
+): Set<string> {
+  if (!graph.hasNode(node)) {
+    return new Set<string>();
+  }
+
+  const predArray = predicates
+    ? Array.isArray(predicates) ? predicates : [predicates]
+    : null;
+
+  const filter = predArray ? (edge: unknown) => {
+    const edgePred = (edge as { predicate?: string }).predicate;
+    if (!edgePred) return false;
+    return predArray.includes(edgePred);
+  } : undefined;
+
+  const ancestors = new Set<string>();
+  const queue: string[] = [node];
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+    ancestors.add(current);
+
+    for (const neighbor of graph.outboundNeighbors(current)) {
+      if (!ancestors.has(neighbor)) {
+        const edge = getEdgeAttributes(graph, current, neighbor);
+        if (!edge || (filter && !filter(edge))) continue;
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  return ancestors;
+}
+
 export function getPathLengthToAncestor(
   graph: MultiDirectedGraph,
   node: string,
