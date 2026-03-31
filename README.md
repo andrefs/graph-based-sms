@@ -111,9 +111,11 @@ where:
 
 - the first multiplying factor is the Wu-Palmer function
 - $N_1$, $N_2$ and $N$ are, respectively, the depths of nodes $c_1$, $c_2$ and of their LCS
-- 
 - $$PF$$ is the penalization factor given by
   - $$PF(c_1, c_2) = (1-\lambda) \cdot (\mathrm{min}(N_1,N_2)-N)+\lambda \cdot (|N1-N2|+1)^{-1}$$ 
+- $$\lambda$$ is 
+  - 0 when $c_1$ and $c_2$ are in the same hierarchy
+  - 1 when $c_1$ and $c_2$ are two concepts in neighborhood
 
 
 

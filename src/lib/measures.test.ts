@@ -11,6 +11,7 @@ import {
   batet,
   _batetCommonInfo,
   zhong,
+  simTBK,
 } from './measures';
 
 const createTaxonomy = () => {
@@ -308,5 +309,41 @@ describe('_batetCommonInfo', () => {
     const g = createBatetExample();
     g.addNode('y');
     expect(_batetCommonInfo(g, 'c1', 'y')).toBe(1);
+  });
+});
+
+describe('simTBK', () => {
+  const g = createTaxonomy();
+
+  it('returns 1 for same node', () => {
+    const g = createTaxonomy();
+    expect(simTBK(g, 'dog', 'dog')).toBe(1);
+  });
+
+  it('returns expected value for parent-child (same hierarchy, lambda=0)', () => {
+    const result = simTBK(g, 'mammal', 'dog');
+    const wuPalmerFactor = (2 * 1) / (1 + 2);
+    const PF = (1 - 0) * (Math.min(1, 2) - 1) + 0 * (1 / (Math.abs(1 - 2) + 1));
+    const expected = wuPalmerFactor * PF;
+    expect(result).toBeCloseTo(expected, 5);
+  });
+
+  it('returns expected value for siblings (neighborhood, lambda=1)', () => {
+    const result = simTBK(g, 'dog', 'cat');
+    const wuPalmerFactor = (2 * 1) / (2 + 2);
+    const PF = (1 - 1) * (Math.min(2, 2) - 1) + 1 * (1 / (Math.abs(2 - 2) + 1));
+    const expected = wuPalmerFactor * PF;
+    expect(result).toBeCloseTo(expected, 5);
+  });
+
+  it('returns 0 when no path exists', () => {
+    const g = createTaxonomy();
+    g.addNode('plant');
+    expect(simTBK(g, 'dog', 'plant')).toBe(0);
+  });
+
+  it('handles nonexistent nodes gracefully', () => {
+    const g = createTaxonomy();
+    expect(simTBK(g, 'nonexistent1', 'nonexistent2')).toBe(0);
   });
 });
