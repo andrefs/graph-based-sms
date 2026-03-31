@@ -101,6 +101,19 @@ $$\mathrm{m(c_1,c_2)} = \frac{depth(LCS(c_1,c_2))}{\mathrm{length}(\mathrm{sp}(c
 
 **Source:** Equation (2) in the third page in Pekar and Staab (2002). Also in Equation (3.17) in p. 89 in Harispe et al. (2015).
 
+
+#### Zhong
+
+Zhong et al. also take into account the notion of depth:
+
+$$\mathrm{m(c_1,c_2)} = 2 \cdot \frac{1}{2k^{\mathrm{depth}(LCS(c_1,c_2))}} - \frac{1}{2k^{\mathrm{depth}(c_1)}}  - \frac{1}{2k^{\mathrm{depth}(c_2)}}$$
+
+where:
+
+- $k : {k\in \mathbb{R}∣k>1}$ defines the contribution of the depth
+
+**Source:** Unnumbered equation on the fifth page in Zhong et al. (2002).
+
 #### Leacock-Chodorow
 
 Defined as the negative log of the shortest path distance normalized by the taxonomy depth:
@@ -185,3 +198,4 @@ Additional options for Hirst-St-Onge:
 - [12] T. Slimani, "Description and evaluation of semantic similarity measures approaches," arXiv preprint arXiv:1310.8059, 2013.
 - [13] M. Batet, D. Sánchez, and A. Valls, "An Ontology-Based Measure to Compute Semantic Similarity in Biomedicine," Journal of biomedical informatics, vol. 44, no. 1, pp. 118–125, 2011.
 - [14] V. Pekar and S. Staab, "Taxonomy learning-factoring the structure of a taxonomy into a semantic classification decision," in COLING 2002: The 19th International Conference on Computational Linguistics, 2002.
+- [15] J. Zhong, H. Zhu, J. Li, and Y. Yu, "Conceptual graph matching for semantic search," in International Conference on Conceptual Structures, pp. 92–106, 2002.

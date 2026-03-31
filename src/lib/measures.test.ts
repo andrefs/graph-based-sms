@@ -10,6 +10,7 @@ import {
   hirstStOnge,
   batet,
   _batetCommonInfo,
+  zhong,
 } from './measures';
 
 const createTaxonomy = () => {
@@ -50,6 +51,7 @@ interface TestCase {
     resnikEdge: number;
     wuPalmer: number;
     pekarStaab: number;
+    zhong: number;
     leacockChodorow: number;
     hirstStOnge: number;
   };
@@ -66,6 +68,7 @@ const testCases: TestCase[] = [
       resnikEdge: 6,
       wuPalmer: 1,
       pekarStaab: 1,
+      zhong: 1 / Math.pow(2, 2),
       leacockChodorow: Math.log(6),
       hirstStOnge: 8,
     },
@@ -80,6 +83,7 @@ const testCases: TestCase[] = [
       resnikEdge: 5,
       wuPalmer: 2 / 3,
       pekarStaab: 0.5,
+      zhong: 1 / Math.pow(2, 1) - 1 / (2 * Math.pow(2, 1)) - 1 / (2 * Math.pow(2, 2)),
       leacockChodorow: Math.log(6) - Math.log(2),
       hirstStOnge: 7,
     },
@@ -94,6 +98,7 @@ const testCases: TestCase[] = [
       resnikEdge: 4,
       wuPalmer: 0,
       pekarStaab: 0,
+      zhong: 0,
       leacockChodorow: Math.log(6) - Math.log(3),
       hirstStOnge: 6,
     },
@@ -108,6 +113,7 @@ const testCases: TestCase[] = [
       resnikEdge: 4,
       wuPalmer: 0.5,
       pekarStaab: 1 / 3,
+      zhong: 1 / Math.pow(2, 1) - 2 * (1 / (2 * Math.pow(2, 2))),
       leacockChodorow: Math.log(6) - Math.log(3),
       hirstStOnge: 5,
     },
@@ -122,6 +128,7 @@ const testCases: TestCase[] = [
       resnikEdge: 2,
       wuPalmer: 0,
       pekarStaab: 0,
+      zhong: 0,
       leacockChodorow: Math.log(6) - Math.log(5),
       hirstStOnge: 3,
     },
@@ -166,6 +173,7 @@ runMeasureTests('radaSimilarity', radaSimilarity);
 runMeasureTests('resnikEdge', resnikEdge, { maxDepth: MAX_DEPTH });
 runMeasureTests('wuPalmer', wuPalmer);
 runMeasureTests('pekarStaab', pekarStaab);
+runMeasureTests('zhong', zhong, { k: 2 });
 runMeasureTests('leacockChodorow', leacockChodorow, { maxDepth: MAX_DEPTH });
 runMeasureTests('hirstStOnge', hirstStOnge, { C: 8, k: 1, maxLength: 5 });
 

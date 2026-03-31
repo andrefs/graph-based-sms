@@ -7,5 +7,6 @@ export { leacockChodorow } from './leacockChodorow';
 export { hirstStOnge } from './hirstStOnge';
 export { nguyenAlMubaid } from './nguyenAlMubaid';
 export { batet, _batetCommonInfo } from './batet';
+export { zhong } from './zhong';
 
 export type { MeasureFunction } from '../types';
