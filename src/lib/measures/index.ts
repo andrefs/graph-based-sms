@@ -5,6 +5,6 @@ export { wuPalmer } from './wuPalmer';
 export { leacockChodorow } from './leacockChodorow';
 export { hirstStOnge } from './hirstStOnge';
 export { nguyenAlMubaid } from './nguyenAlMubaid';
-export { batet } from './batet';
+export { batet, _batetCommonInfo } from './batet';
 
 export type { MeasureFunction } from '../types';
