@@ -4,5 +4,6 @@ export { resnikEdge } from './resnikEdge';
 export { wuPalmer } from './wuPalmer';
 export { leacockChodorow } from './leacockChodorow';
 export { hirstStOnge } from './hirstStOnge';
+export { nguyenAlMubaid } from './nguyenAlMubaid';
 
 export type { MeasureFunction } from '../types';

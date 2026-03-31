@@ -1,6 +1,6 @@
-# Graph Edge Semantic Measures
+# Graph-Based Semantic Measures
 
-Path-based semantic similarity and relatedness measures using graphology MultiDirectedGraphs.
+Graph (path and feature-based) semantic similarity and relatedness measures using graphology MultiDirectedGraphs.
 
 ## Installation
 
@@ -19,7 +19,7 @@ import {
   wuPalmer,
   leacockChodorow,
   hirstStOnge,
-} from 'graph-edge-sms';
+} from 'graph-based-sms';
 
 const graph = new MultiDirectedGraph();
 graph.addNode('animal', 'mammal', 'bird', 'dog', 'cat');
@@ -49,9 +49,13 @@ hirstStOnge(graph, 'dog', 'cat', { C: 8, k: 1, maxLength: 5 }); // 5
 
 ## Semantic Measures
 
+This package covers measures that can be calculated from the graph, with no additional semantic evidence necessary. These include path-based measures, where the strength of the relation is evaluated through the analysis of paths between the two concepts, their ancestors or the graph root; and feature-based measures in which the feature sets are derived from the graph, e.g. the sets of ancestors or siblings.
+
+### Path-based measures
+
 This package implements well-known edge-based semantic similarity and relatedness measures from the literature.
 
-### Shortest Path (Rada Distance)
+#### Shortest Path (Rada Distance)
 
 Rada et al. define the conceptual distance between two concepts based on the shortest path between them in a taxonomy:
 
@@ -59,7 +63,7 @@ $$\mathrm{m}(c_1,c_2) = \mathrm{length}(\mathrm{sp}(c_1,c_2))$$
 
 **Source:** Definition 1, p. 20 in Rada et al. (1989). Also Equation (1), p. 2 in Harispe et al. (2014), Equation (3.12), p. 88 in Harispe et al. (2015).
 
-### Rada Similarity
+#### Rada Similarity
 
 Often Rada's distance is converted to a similarity measure using the formula:
 
@@ -67,7 +71,7 @@ $$\mathrm{m}(c_1,c_2) = \frac{1}{1 + \mathrm{length}(\mathrm{sp}(c_1,c_2))}$$
 
 **Source:** Equation (1), p. 334 in Rezgui et al. (2013). Also Equation (1), p. 6 in Chandrasekaran & Mago (2022), Equation (3.13), p. 88 in Harispe et al. (2015).
 
-### Resnik (Edge)
+#### Resnik (Edge)
 
 While Resnik's original paper focuses on information-based measures, it also includes an edge-based measure defined as:
 
@@ -79,7 +83,7 @@ where:
 
 **Source:** Equation (5), p. 101 in Resnik (1999). Also Equation (3.14), p. 89 in Harispe et al. (2015).
 
-### Wu-Palmer
+#### Wu-Palmer
 
 Wu and Palmer define a similarity measure based on the depth of the least common subsumer (LCS) of two concepts and the lengths of the shortest paths from each concept to the LCS:
 
@@ -87,7 +91,7 @@ $$\mathrm{m}(c_1,c_2) = \frac{2 \times \mathrm{depth}(LCS(c_1,c_2))}{2 \times \m
 
 **Source:** Unnumbered equation in p. 136 in Wu & Palmer (1994). Also Equation (3), p. 3 in Harispe et al. (2014), Equation (3.16), p. 89 in Harispe et al. (2015).
 
-### Leacock-Chodorow
+#### Leacock-Chodorow
 
 Defined as the negative log of the shortest path distance normalized by the taxonomy depth:
 
@@ -99,7 +103,7 @@ where:
 
 **Source:** Unnumbered equation in p. 275 in Leacock & Chodorow (1998). Also Equation (3.15), p. 89 in Harispe et al. (2015).
 
-### Hirst-St-Onge
+#### Hirst-St-Onge
 
 A measure that combines shortest path length with the number of direction changes in the path:
 
@@ -110,7 +114,37 @@ where:
 - $k$ is a constant for weighting direction changes (default: 1)
 - $d$ is the number of direction changes in the path
 
-**Source:** Hirst & St-Onge (1998)
+**Source:** Unnumbered equation in p.4 in Hirst & St-Onge (1998). Also Equation (2) in 
+p. 4 in Slimani (2013).
+
+#### Nguyen and Al-Mubaid
+
+This measure takes into account the depth of the taxonomy and the depth of the LCS.
+
+$$\mathrm{m(c_1,c_2) = log(2+(sp(c_1,c_2)-1)*(D-d))}$$
+
+where:
+
+- $D$ is the depth of the taxonomy
+- $d$ is the depth of $LCS(c_1, c_2)$
+
+**Source:** Equation (1) in p.625 in Nguyen and Al-Mubaid (2006). Also Equation (3) in 
+p. 884 in McInnes et al. (2014).
+
+### Feature-based
+
+#### Batet et al.
+
+This measure considers that the number of shared *superconcepts* an indication of proximity, and the amount of non-shared *superconcepts* as an indication of distance. 
+
+$$\mathrm{m(c_1,c_2) = -log_2 \frac{|T(c_1) \cup  T(c_2)|-|T(c_1)\cap T(c_2)|}{|T(c_1) \cup  T(c_2)|}}$$
+
+where:
+
+- $T(c_i)$ is the set of superconcepts of $c_i$
+
+**Source:** Equation (14) in p. 122 in Batet et al. (2011).
+
 
 ## Options
 
@@ -135,4 +169,8 @@ Additional options for Hirst-St-Onge:
 - [6] S. Harispe, S. Ranwez, S. Janaqi, and J. Montmain, "Semantic similarity from natural language and ontology analysis", Synthesis Lectures on Human Language Technologies, vol. 8, no. 1, pp. 1–254, 2015.
 - [7] Z. Wu and M. Palmer, "Verb Semantics and Lexical Selection", in 32nd Annual Meeting of the Association for Computational Linguistics, 1994, pp. 133–138.
 - [8] C. Leacock and M. Chodorow, "Combining Local Context and WordNet Similarity for Word Sense", WordNet: An electronic lexical database, p. 265, 1998.
-- [9] G. Hirst and D. St-Onge, "Lexical Chains as Representations of Context for the Detection and Correction of Malapropisms", WordNet: An electronic lexical database, p. 305, 1998.
+- [9] G. Hirst and D. St-Onge, "Lexical Chains as Representations of Context for the Detection and Correction of Malapropisms," WordNet: An electronic lexical database, vol. 305, pp. 305–332, 1998.
+- [10] H. A. Nguyen and H. Al-Mubaid, "New ontology-based semantic similarity measure for the biomedical domain," in 2006 IEEE International Conference on Granular Computing, pp. 623–628, 2006.
+- [11] B. T. McInnes, T. Pedersen, Y. Liu, G. B. Melton, and S. V. Pakhomov, "U-path: An undirected path-based measure of semantic similarity," in AMIA Annual Symposium Proceedings, vol. 2014, p. 882, 2014.
+- [12] T. Slimani, "Description and evaluation of semantic similarity measures approaches," arXiv preprint arXiv:1310.8059, 2013.
+- [13] M. Batet, D. Sánchez, and A. Valls, "An Ontology-Based Measure to Compute Semantic Similarity in Biomedicine," Journal of biomedical informatics, vol. 44, no. 1, pp. 118–125, 2011.

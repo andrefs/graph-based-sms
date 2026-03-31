@@ -1,7 +1,7 @@
 {
-  "name": "graph-edge-sms",
+  "name": "graph-based-sms",
   "version": "0.0.4",
-  "description": "Graph edge-based semantic measures using graphology graphs",
+  "description": "Graph-based semantic similarity measures using graphology graphs",
   "main": "dist/index.js",
   "scripts": {
     "prepare": "npm run build",
