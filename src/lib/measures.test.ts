@@ -233,6 +233,7 @@ describe('batet', () => {
 });
 
 describe('_batetCommonInfo', () => {
+  // example extracted from paper
   const createBatetExample = () => {
     const g = new MultiDirectedGraph();
     ['x', 'c3', 'c4', 'c1', 'c2'].forEach(n => g.addNode(n));
@@ -243,11 +244,13 @@ describe('_batetCommonInfo', () => {
     return g;
   };
 
+  // example extracted from paper
   it('returns 0.5 for siblings c1 and c2', () => {
     const g = createBatetExample();
     expect(_batetCommonInfo(g, 'c1', 'c2')).toBeCloseTo(0.5, 5);
   });
 
+  // example extracted from paper
   it('returns 2/3 for cousins c3 and c4', () => {
     const g = createBatetExample();
     expect(_batetCommonInfo(g, 'c3', 'c4')).toBeCloseTo(2 / 3, 5);
