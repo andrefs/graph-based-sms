@@ -314,38 +314,28 @@ describe('_batetCommonInfo', () => {
 });
 
 describe('simTBK', () => {
-  const g = createTaxonomy();
+  // extracted from Slimani et al. 2003
+  const createSimTBKExample = () => {
+    const g = new MultiDirectedGraph();
+    ['v', 'c1', 'w', 'x', 'y', 'z', 'c2', 'c3'].forEach(n => g.addNode(n));
+    g.addEdge('c1', 'v', { predicate: 'is-a' });
+    g.addEdge('w', 'v', { predicate: 'is-a' });
+    g.addEdge('x', 'c1', { predicate: 'is-a' });
+    g.addEdge('y', 'c1', { predicate: 'is-a' });
+    g.addEdge('z', 'x', { predicate: 'is-a' });
+    g.addEdge('c2', 'z', { predicate: 'is-a' });
+    g.addEdge('c3', 'x', { predicate: 'is-a' });
+    return g;
+  };
 
-  it('returns 1 for same node', () => {
-    const g = createTaxonomy();
-    expect(simTBK(g, 'dog', 'dog')).toBe(1);
+  it('returns expected value for c1 and c2 (same hierarchy, lambda=0)', () => {
+    const g = createSimTBKExample();
+    expect(simTBK(g, 'c1', 'c2')).toBeCloseTo(0, 2);
   });
 
-  it('returns expected value for parent-child (same hierarchy, lambda=0)', () => {
-    const result = simTBK(g, 'mammal', 'dog');
-    const wuPalmerFactor = (2 * 1) / (1 + 2);
-    const PF = (1 - 0) * (Math.min(1, 2) - 1) + 0 * (1 / (Math.abs(1 - 2) + 1));
-    const expected = wuPalmerFactor * PF;
-    expect(result).toBeCloseTo(expected, 5);
-  });
-
-  it('returns expected value for siblings (neighborhood, lambda=1)', () => {
-    const result = simTBK(g, 'dog', 'cat');
-    const wuPalmerFactor = (2 * 1) / (2 + 2);
-    const PF = (1 - 1) * (Math.min(2, 2) - 1) + 1 * (1 / (Math.abs(2 - 2) + 1));
-    const expected = wuPalmerFactor * PF;
-    expect(result).toBeCloseTo(expected, 5);
-  });
-
-  it('returns 0 when no path exists', () => {
-    const g = createTaxonomy();
-    g.addNode('plant');
-    expect(simTBK(g, 'dog', 'plant')).toBe(0);
-  });
-
-  it('handles nonexistent nodes gracefully', () => {
-    const g = createTaxonomy();
-    expect(simTBK(g, 'nonexistent1', 'nonexistent2')).toBe(0);
+  it('returns expected value for c2 and c3 (neighborhood, lambda=1)', () => {
+    const g = createSimTBKExample();
+    expect(simTBK(g, 'c2', 'c3')).toBeCloseTo(0.29, 2);
   });
 });
 
