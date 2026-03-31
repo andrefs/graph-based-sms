@@ -176,3 +176,4 @@ Additional options for Hirst-St-Onge:
 - [11] B. T. McInnes, T. Pedersen, Y. Liu, G. B. Melton, and S. V. Pakhomov, "U-path: An undirected path-based measure of semantic similarity," in AMIA Annual Symposium Proceedings, vol. 2014, p. 882, 2014.
 - [12] T. Slimani, "Description and evaluation of semantic similarity measures approaches," arXiv preprint arXiv:1310.8059, 2013.
 - [13] M. Batet, D. Sánchez, and A. Valls, "An Ontology-Based Measure to Compute Semantic Similarity in Biomedicine," Journal of biomedical informatics, vol. 44, no. 1, pp. 118–125, 2011.
+- [14] V. Pekar and S. Staab, "Taxonomy learning-factoring the structure of a taxonomy into a semantic classification decision," in COLING 2002: The 19th International Conference on Computational Linguistics, 2002.
