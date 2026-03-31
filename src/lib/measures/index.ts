@@ -2,6 +2,7 @@ export { shortestPath } from './shortestPath';
 export { radaSimilarity } from './radaSimilarity';
 export { resnikEdge } from './resnikEdge';
 export { wuPalmer } from './wuPalmer';
+export { pekarStaab } from './pekarStaab';
 export { leacockChodorow } from './leacockChodorow';
 export { hirstStOnge } from './hirstStOnge';
 export { nguyenAlMubaid } from './nguyenAlMubaid';

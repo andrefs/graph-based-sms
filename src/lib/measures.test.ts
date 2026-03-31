@@ -5,6 +5,7 @@ import {
   radaSimilarity,
   resnikEdge,
   wuPalmer,
+  pekarStaab,
   leacockChodorow,
   hirstStOnge,
   batet,
@@ -48,6 +49,7 @@ interface TestCase {
     radaSimilarity: number;
     resnikEdge: number;
     wuPalmer: number;
+    pekarStaab: number;
     leacockChodorow: number;
     hirstStOnge: number;
   };
@@ -63,6 +65,7 @@ const testCases: TestCase[] = [
       radaSimilarity: 1,
       resnikEdge: 6,
       wuPalmer: 1,
+      pekarStaab: 1,
       leacockChodorow: Math.log(6),
       hirstStOnge: 8,
     },
@@ -76,6 +79,7 @@ const testCases: TestCase[] = [
       radaSimilarity: 0.5,
       resnikEdge: 5,
       wuPalmer: 2 / 3,
+      pekarStaab: 0.5,
       leacockChodorow: Math.log(6) - Math.log(2),
       hirstStOnge: 7,
     },
@@ -89,6 +93,7 @@ const testCases: TestCase[] = [
       radaSimilarity: 1 / 3,
       resnikEdge: 4,
       wuPalmer: 0,
+      pekarStaab: 0,
       leacockChodorow: Math.log(6) - Math.log(3),
       hirstStOnge: 6,
     },
@@ -102,6 +107,7 @@ const testCases: TestCase[] = [
       radaSimilarity: 1 / 3,
       resnikEdge: 4,
       wuPalmer: 0.5,
+      pekarStaab: 1 / 3,
       leacockChodorow: Math.log(6) - Math.log(3),
       hirstStOnge: 5,
     },
@@ -115,6 +121,7 @@ const testCases: TestCase[] = [
       radaSimilarity: 1 / 5,
       resnikEdge: 2,
       wuPalmer: 0,
+      pekarStaab: 0,
       leacockChodorow: Math.log(6) - Math.log(5),
       hirstStOnge: 3,
     },
@@ -158,6 +165,7 @@ runMeasureTests('shortestPath (Rada Distance)', shortestPath);
 runMeasureTests('radaSimilarity', radaSimilarity);
 runMeasureTests('resnikEdge', resnikEdge, { maxDepth: MAX_DEPTH });
 runMeasureTests('wuPalmer', wuPalmer);
+runMeasureTests('pekarStaab', pekarStaab);
 runMeasureTests('leacockChodorow', leacockChodorow, { maxDepth: MAX_DEPTH });
 runMeasureTests('hirstStOnge', hirstStOnge, { C: 8, k: 1, maxLength: 5 });
 

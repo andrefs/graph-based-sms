@@ -63,7 +63,7 @@ Rada et al. define the conceptual distance between two concepts based on the sho
 
 $$\mathrm{m}(c_1,c_2) = \mathrm{length}(\mathrm{sp}(c_1,c_2))$$
 
-**Source:** Definition 1, p. 20 in Rada et al. (1989). Also Equation (1), p. 2 in Harispe et al. (2014), Equation (3.12), p. 88 in Harispe et al. (2015).
+**Source:** Definition 1, p. 20 in Rada et al. (1989). Also Equation (1), p. 2 in Harispe et al. (2014); Equation (3.12), p. 88 in Harispe et al. (2015).
 
 #### Rada Similarity
 
@@ -71,7 +71,7 @@ Often Rada's distance is converted to a similarity measure using the formula:
 
 $$\mathrm{m}(c_1,c_2) = \frac{1}{1 + \mathrm{length}(\mathrm{sp}(c_1,c_2))}$$
 
-**Source:** Equation (1), p. 334 in Rezgui et al. (2013). Also Equation (1), p. 6 in Chandrasekaran & Mago (2022), Equation (3.13), p. 88 in Harispe et al. (2015).
+**Source:** Equation (1), p. 334 in Rezgui et al. (2013). Also Equation (1), p. 6 in Chandrasekaran & Mago (2022); Equation (3.13), p. 88 in Harispe et al. (2015).
 
 #### Resnik (Edge)
 
@@ -91,7 +91,15 @@ Wu and Palmer define a similarity measure based on the depth of the least common
 
 $$\mathrm{m}(c_1,c_2) = \frac{2 \times \mathrm{depth}(LCS(c_1,c_2))}{2 \times \mathrm{depth}(LCS(c_1,c_2)) + \mathrm{length}(\mathrm{sp}(c_1,LCS(c_1,c_2))) + \mathrm{length}(\mathrm{sp}(c_2,LCS(c_1,c_2)))}$$
 
-**Source:** Unnumbered equation in p. 136 in Wu & Palmer (1994). Also Equation (3), p. 3 in Harispe et al. (2014), Equation (3.16), p. 89 in Harispe et al. (2015).
+**Source:** Unnumbered equation in p. 136 in Wu & Palmer (1994). Also Equation (3), p. 3 in Harispe et al. (2014); Equation (3.16), p. 89 in Harispe et al. (2015).
+
+#### Pekar-Staab
+
+A variation of Wu-Palmer with different normalization:
+
+$$\mathrm{m(c_1,c_2)} = \frac{depth(LCS(c_1,c_2))}{\mathrm{length}(\mathrm{sp}(c_1,LCS(c_1,c_2))) + \mathrm{length}(\mathrm{sp}(c_2,LCS(c_1,c_2))) + depth(LCS(c_1,c_2))}$$
+
+**Source:** Equation (2) in the third page in Pekar and Staab (2002). Also in Equation (3.17) in p. 89 in Harispe et al. (2015).
 
 #### Leacock-Chodorow
 

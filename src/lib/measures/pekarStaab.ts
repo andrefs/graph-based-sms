@@ -1,7 +1,7 @@
 import type { MeasureFunction } from '../types';
 import { getDepth, findLCAs, getPathLengthToAncestor } from '../helpers';
 
-export const wuPalmer: MeasureFunction = (graph, concept1, concept2, options = {}) => {
+export const pekarStaab: MeasureFunction = (graph, concept1, concept2, options = {}) => {
   const lcas = findLCAs(graph, concept1, concept2, options.predicates);
 
   if (lcas.length === 0) {
@@ -16,7 +16,7 @@ export const wuPalmer: MeasureFunction = (graph, concept1, concept2, options = {
     const path2 = getPathLengthToAncestor(graph, concept2, lca, options.predicates);
 
     if (depthLCA > 0 && path1 !== null && path2 !== null) {
-      const score = (2 * depthLCA) / (2 * depthLCA + path1 + path2);
+      const score = depthLCA / (path1 + path2 + depthLCA);
       bestScore = Math.max(bestScore, score);
     }
   }
