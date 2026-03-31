@@ -101,6 +101,21 @@ $$\mathrm{m(c_1,c_2)} = \frac{depth(LCS(c_1,c_2))}{\mathrm{length}(\mathrm{sp}(c
 
 **Source:** Equation (2) in the third page in Pekar and Staab (2002). Also in Equation (3.17), p. 89 in Harispe et al. (2015).
 
+#### simTBK
+
+An adaptation of Wu-Palmer which penalizes concepts defined in the neighborhood:
+
+$$\mathrm{m(c_1,c_2)} = \frac{2 \cdot N}{N_1 + N_2} \times PF(c_1,c_2)$$
+
+where:
+
+- the first multiplying factor is the Wu-Palmer function
+- $N_1$, $N_2$ and $N$ are, respectively, the depths of nodes $c_1$, $c_2$ and of their LCS
+- 
+- $$PF$$ is the penalization factor given by
+  - $$PF(c_1, c_2) = (1-\lambda) \cdot (\mathrm{min}(N_1,N_2)-N)+\lambda \cdot (|N1-N2|+1)^{-1}$$ 
+
+
 
 #### Zhong
 
@@ -113,6 +128,7 @@ where:
 - $k : {k\in \mathbb{R}∣k>1}$ defines the contribution of the depth
 
 **Source:** Unnumbered equation on the fifth page in Zhong et al. (2002). Also Equation (3.18), p. 90 in Harispe et al. (2015).
+
 
 #### Leacock-Chodorow
 

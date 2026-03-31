@@ -202,6 +202,33 @@ describe('leacockChodorow', () => {
   });
 });
 
+// Additional tests for wuPalmer
+// extracted from Slimani et al. 2003
+describe('wuPalmer', () => {
+  const createWuPalmerExample = () => {
+    const g = new MultiDirectedGraph();
+    ['v', 'c1', 'w', 'x', 'y', 'z', 'c2', 'c3'].forEach(n => g.addNode(n));
+    g.addEdge('c1', 'v', { predicate: 'is-a' });
+    g.addEdge('w', 'v', { predicate: 'is-a' });
+    g.addEdge('x', 'c1', { predicate: 'is-a' });
+    g.addEdge('y', 'c1', { predicate: 'is-a' });
+    g.addEdge('z', 'x', { predicate: 'is-a' });
+    g.addEdge('c2', 'z', { predicate: 'is-a' });
+    g.addEdge('c3', 'x', { predicate: 'is-a' });
+    return g;
+  };
+
+  it('returns 0.4 for c1 and c2', () => {
+    const g = createWuPalmerExample();
+    expect(wuPalmer(g, 'c1', 'c2')).toBeCloseTo(0.4, 2);
+  });
+
+  it('returns 0.57 for c2 and c3', () => {
+    const g = createWuPalmerExample();
+    expect(wuPalmer(g, 'c2', 'c3')).toBeCloseTo(0.57, 2);
+  });
+});
+
 // Tests for batet
 describe('batet', () => {
   const g = createTaxonomy();
