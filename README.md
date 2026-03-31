@@ -2,7 +2,7 @@
 
 Graph (path and feature-based) semantic similarity and relatedness measures using graphology MultiDirectedGraphs.
 
-> This package replaces `graph-edge-sms`. The original package only included edge-based measures; this package extends it to also include feature-based measures.
+> This package replaces `graph-edge-sms`. The original package only included edge-based measures; this package extends it to also include feature-based measures as long as they require only information from the graph.
 
 ## Installation
 
