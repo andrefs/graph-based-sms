@@ -198,3 +198,4 @@ Additional options for Hirst-St-Onge:
 - [13] M. Batet, D. Sánchez, and A. Valls, "An Ontology-Based Measure to Compute Semantic Similarity in Biomedicine," Journal of biomedical informatics, vol. 44, no. 1, pp. 118–125, 2011.
 - [14] V. Pekar and S. Staab, "Taxonomy learning-factoring the structure of a taxonomy into a semantic classification decision," in COLING 2002: The 19th International Conference on Computational Linguistics, 2002.
 - [15] J. Zhong, H. Zhu, J. Li, and Y. Yu, "Conceptual graph matching for semantic search," in International Conference on Conceptual Structures, pp. 92–106, 2002.
+- [16] T. Slimani, B. B. Yaghlane, and K. Mellouli, "A New Similarity Measure Based on Edge Counting," World Academy of Science, Engineering and Technology, vol. 23, no. 2006, pp. 34–38, 2006.
