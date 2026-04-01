@@ -43,6 +43,80 @@ export const createSlimaniExample1 = () => {
 };
 
 /**
+ * Example extracted from Slimani et al. 2003
+ * Larger hierarchy used for additional tests
+ */
+export const createSlimaniExample2 = () => {
+  const g = new MultiDirectedGraph();
+  const nodes = [
+    'Root', 'Schedule', 'Person', 'Organization', 'Work', 'Publication',
+    'Student', 'GraduateStudent', 'ResearchAssistant', 'Employee', 'UndergraduateStudent',
+    'Research', 'Course', 'GraduateCourse',
+    'AdministrativeStaff', 'Faculty', 'ClericalStaff', 'SystemsStaff',
+    'PostDoc', 'Professor', 'Lecturer', 'AssistantProfessor', 'VisitingProfessor',
+    'Dean', 'Chair', 'FullProfessor',
+    'Department', 'ResearchGroup', 'University', 'Program', 'Institute', 'College',
+    'UnofficialPublication', 'Software', 'Manual', 'Book', 'Specification', 'Article',
+    'ConferencePaper', 'TechnicalReport', 'JournalArticle'
+  ];
+  nodes.forEach(n => g.addNode(n));
+
+  g.addEdge('Schedule', 'Root', { predicate: 'is-a' });
+  g.addEdge('Person', 'Root', { predicate: 'is-a' });
+  g.addEdge('Work', 'Root', { predicate: 'is-a' });
+  g.addEdge('Organization', 'Root', { predicate: 'is-a' });
+  g.addEdge('Publication', 'Root', { predicate: 'is-a' });
+
+  g.addEdge('Student', 'Person', { predicate: 'is-a' });
+  g.addEdge('GraduateStudent', 'Person', { predicate: 'is-a' });
+  g.addEdge('ResearchAssistant', 'Person', { predicate: 'is-a' });
+  g.addEdge('Employee', 'Person', { predicate: 'is-a' });
+
+  g.addEdge('UndergraduateStudent', 'Student', { predicate: 'is-a' });
+
+  g.addEdge('Research', 'Work', { predicate: 'is-a' });
+  g.addEdge('Course', 'Work', { predicate: 'is-a' });
+
+  g.addEdge('GraduateCourse', 'Course', { predicate: 'is-a' });
+
+  g.addEdge('AdministrativeStaff', 'Employee', { predicate: 'is-a' });
+  g.addEdge('Faculty', 'Employee', { predicate: 'is-a' });
+
+  g.addEdge('ClericalStaff', 'AdministrativeStaff', { predicate: 'is-a' });
+  g.addEdge('SystemsStaff', 'AdministrativeStaff', { predicate: 'is-a' });
+
+  g.addEdge('PostDoc', 'Faculty', { predicate: 'is-a' });
+  g.addEdge('Professor', 'Faculty', { predicate: 'is-a' });
+  g.addEdge('Lecturer', 'Faculty', { predicate: 'is-a' });
+
+  g.addEdge('AssistantProfessor', 'Professor', { predicate: 'is-a' });
+  g.addEdge('VisitingProfessor', 'Professor', { predicate: 'is-a' });
+  g.addEdge('Dean', 'Professor', { predicate: 'is-a' });
+  g.addEdge('Chair', 'Professor', { predicate: 'is-a' });
+  g.addEdge('FullProfessor', 'Professor', { predicate: 'is-a' });
+
+  g.addEdge('Department', 'Organization', { predicate: 'is-a' });
+  g.addEdge('ResearchGroup', 'Organization', { predicate: 'is-a' });
+  g.addEdge('University', 'Organization', { predicate: 'is-a' });
+  g.addEdge('Program', 'Organization', { predicate: 'is-a' });
+  g.addEdge('Institute', 'Organization', { predicate: 'is-a' });
+  g.addEdge('College', 'Organization', { predicate: 'is-a' });
+
+  g.addEdge('UnofficialPublication', 'Publication', { predicate: 'is-a' });
+  g.addEdge('Software', 'Publication', { predicate: 'is-a' });
+  g.addEdge('Manual', 'Publication', { predicate: 'is-a' });
+  g.addEdge('Book', 'Publication', { predicate: 'is-a' });
+  g.addEdge('Specification', 'Publication', { predicate: 'is-a' });
+  g.addEdge('Article', 'Publication', { predicate: 'is-a' });
+
+  g.addEdge('ConferencePaper', 'Article', { predicate: 'is-a' });
+  g.addEdge('TechnicalReport', 'Article', { predicate: 'is-a' });
+  g.addEdge('JournalArticle', 'Article', { predicate: 'is-a' });
+
+  return g;
+};
+
+/**
  * Test cases for semantic measures
  */
 export interface TestCase {
