@@ -52,6 +52,21 @@ leacockChodorow(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.693...
 
 // Hirst-St-Onge
 hirstStOnge(graph, 'dog', 'cat', { C: 8, k: 1, maxLength: 5 }); // 5
+
+// Pekar-Staab
+pekarStaab(graph, 'dog', 'cat'); // 0.333...
+
+// Nguyen-AlMubaid (requires maxDepth)
+nguyenAlMubaid(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.693...
+
+// Batet
+batet(graph, 'dog', 'cat'); // 1
+
+// Zhong (requires k)
+zhong(graph, 'dog', 'cat', { k: 2 }); // 0.125
+
+// simTBK (requires maxDepth)
+simTBK(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.5
 ```
 
 ## Semantic Measures
@@ -116,9 +131,9 @@ where:
 
 - the first multiplying factor is the Wu-Palmer function
 - $N_1$, $N_2$ and $N$ are, respectively, the depths of nodes $c_1$, $c_2$ and of their LCS
-- $$PF$$ is the penalization factor[^1] given by
-  - if $$\lambda = 0$$: 1
-  - if $$\lambda = 1$$: $$\frac{1}{|N1-N2|+1}^$$ 
+- $$PF$$ is the penalization factor[^1] given by $$PF(c_1,c_2) =$$
+  - 1, if $$\lambda = 0$$
+  - $$\frac{1}{|N1-N2|+1}$$, if $$\lambda = 1$$
 - $$\lambda$$ is 
   - 0 when $c_1$ and $c_2$ are in the same hierarchy
   - 1 when $c_1$ and $c_2$ are two concepts in neighborhood
