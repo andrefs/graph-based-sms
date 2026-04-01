@@ -26,6 +26,7 @@ import {
   batet,
   zhong,
   simTBK,
+  li,
 } from 'graph-based-sms';
 
 const graph = new MultiDirectedGraph();
@@ -67,6 +68,9 @@ zhong(graph, 'dog', 'cat', { k: 2 }); // 0.125
 
 // simTBK (requires maxDepth)
 simTBK(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.5
+
+// Li et al. (optional alpha and beta)
+li(graph, 'dog', 'cat'); // 0.283...
 ```
 
 ## Semantic Measures
@@ -192,6 +196,22 @@ where:
 
 **Source:** Equation (1) in p.625 in Nguyen and Al-Mubaid (2006). Also Equation (4), p. 884 in McInnes et al. (2014).
 
+#### Li et al.
+
+This measure also takes into account the length of the shortest path and the depth of the LCA:
+
+$$\mathrm{m(c_1,c_2)} = e^{-\alpha \cdot \mathrm{length}(sp(c_1,c_2))} \times df(c_1,c_2)$$
+
+where:
+
+- $$df(c_1,c_2) = \frac{e^{\beta h}-e^{-\beta h}}{e^{\beta h}+e^{-\beta h}}$$
+- $$h = \mathrm{depth}(LCS(c_1,c_2))$$
+- $$\beta > 0$$ is used to tune the depth factor $$df$$
+- $$\alpha \geqslant 0$$ controls the importance of the taxonomic distance
+
+**Source:** Equation (5), p. 14 in Li et al. (2006). Also Equation (3.19), p. 90 in  in Harispe et al. (2015).
+
+
 ### Feature-based
 
 #### Batet et al.
@@ -239,5 +259,6 @@ Additional options for Hirst-St-Onge:
 - [14] V. Pekar and S. Staab, "Taxonomy learning-factoring the structure of a taxonomy into a semantic classification decision," in COLING 2002: The 19th International Conference on Computational Linguistics, 2002.
 - [15] J. Zhong, H. Zhu, J. Li, and Y. Yu, "Conceptual graph matching for semantic search," in International Conference on Conceptual Structures, pp. 92–106, 2002.
 - [16] T. Slimani, B. B. Yaghlane, and K. Mellouli, "A New Similarity Measure Based on Edge Counting," World Academy of Science, Engineering and Technology, vol. 23, no. 2006, pp. 34–38, 2006.
+- [17] Y. Li, D. McLean, Z. A. Bandar, J. D. O'shea, and K. Crockett, "Sentence Similarity Based on Semantic Nets and Corpus Statistics," IEEE transactions on knowledge and data engineering, vol. 18, no. 8, pp. 1138–1150, 2006.
 
 [^1]: The formula in the original paper seems to have an error, so we here adapted it to match the description and examples later given in the paper.

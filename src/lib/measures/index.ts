@@ -9,5 +9,6 @@ export { nguyenAlMubaid } from './nguyenAlMubaid';
 export { batet, _batetCommonInfo } from './batet';
 export { zhong } from './zhong';
 export { simTBK, computeLambda } from './simTBK';
+export { li } from './li';
 
 export type { MeasureFunction } from '../types';
