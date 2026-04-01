@@ -17,12 +17,44 @@ describe('simTBK with SlimaniExample1', () => {
   });
 });
 
-// extracted from Slimani et al. 2003
+// extracted from Slimani et al. 2003 - larger hierarchy
 describe('simTBK with SlimaniExample2', () => {
   const g = createSlimaniExample2();
 
-  it('returns expected value for Person and ResearchAssistant (same hierarchy)', () => {
-    expect(simTBK(g, 'Person', 'ResearchAssistant')).toBeCloseTo(2 / 3, 2);
+  it('returns 2/3 for Person and ResearchAssistant', () => {
+    expect(simTBK(g, 'Person', 'ResearchAssistant')).toBeCloseTo(2 / 3, 4);
+  });
+
+  it('returns 0.8 for VisitingProfessor and FullProfessor', () => {
+    expect(simTBK(g, 'VisitingProfessor', 'FullProfessor')).toBeCloseTo(0.8, 4);
+  });
+
+  it('returns 2/9 for VisitingProfessor and SystemsStaff', () => {
+    expect(simTBK(g, 'VisitingProfessor', 'SystemsStaff')).toBeCloseTo(2 / 9, 4);
+  });
+
+  it('returns 0.2 for ResearchAssistant and Faculty', () => {
+    expect(simTBK(g, 'ResearchAssistant', 'Faculty')).toBeCloseTo(0.2, 4);
+  });
+
+  it('returns 1/6 for Chair and AdministrativeStaff', () => {
+    expect(simTBK(g, 'Chair', 'AdministrativeStaff')).toBeCloseTo(1 / 6, 4);
+  });
+
+  it('returns 0.2 for Research and GraduateCourse', () => {
+    expect(simTBK(g, 'Research', 'GraduateCourse')).toBeCloseTo(0.2, 4);
+  });
+
+  it('returns 0.5 for SystemsStaff and Professor', () => {
+    expect(simTBK(g, 'SystemsStaff', 'Professor')).toBeCloseTo(0.5, 4);
+  });
+
+  it('returns 2/9 for SystemsStaff and Dean', () => {
+    expect(simTBK(g, 'SystemsStaff', 'Dean')).toBeCloseTo(2 / 9, 4);
+  });
+
+  it('returns 0 for Person and Schedule', () => {
+    expect(simTBK(g, 'Person', 'Schedule')).toBeCloseTo(0, 4);
   });
 });
 
