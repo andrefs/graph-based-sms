@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { simTBK, computeLambda } from './simTBK';
-import { createSlimaniExample1, createTaxonomy, runMeasureTests } from './measures.test-helpers';
+import { createSlimaniExample1, createSlimaniExample2, createTaxonomy, runMeasureTests } from './measures.test-helpers';
 
 runMeasureTests('simTBK', simTBK);
 
@@ -14,6 +14,15 @@ describe('simTBK with SlimaniExample1', () => {
   it('returns expected value for c2 and c3 (neighborhood, lambda=1)', () => {
     const g = createSlimaniExample1();
     expect(simTBK(g, 'c2', 'c3')).toBeCloseTo(0.29, 2);
+  });
+});
+
+// extracted from Slimani et al. 2003
+describe('simTBK with SlimaniExample2', () => {
+  const g = createSlimaniExample2();
+
+  it('returns expected value for Person and ResearchAssistant (same hierarchy)', () => {
+    expect(simTBK(g, 'Person', 'ResearchAssistant')).toBeCloseTo(2 / 3, 2);
   });
 });
 
