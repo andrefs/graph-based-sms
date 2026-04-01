@@ -19,8 +19,13 @@ import {
   radaSimilarity,
   resnikEdge,
   wuPalmer,
+  pekarStaab,
   leacockChodorow,
   hirstStOnge,
+  nguyenAlMubaid,
+  batet,
+  zhong,
+  simTBK,
 } from 'graph-based-sms';
 
 const graph = new MultiDirectedGraph();
@@ -119,6 +124,7 @@ where:
   - 1 when $c_1$ and $c_2$ are two concepts in neighborhood
 
 
+**Source:** Unnumbered equation, p. 775 in Slimani et al. (2003). Also in Equation (3.20), p. 90 in  in Harispe et al. (2015).
 
 #### Zhong
 
