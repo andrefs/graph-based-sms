@@ -11,7 +11,7 @@ describe('simTBK', () => {
 
   it('returns expected value for direct parent-child', () => {
     const result = simTBK(g, 'mammal', 'dog');
-    expect(result).toBeCloseTo(0, 2);
+    expect(result).toBeCloseTo(2 / 3, 2);
   });
 
   it('returns expected value for grandparent-grandchild', () => {
@@ -43,7 +43,7 @@ describe('simTBK', () => {
   // extracted from Slimani et al. 2003
   it('returns expected value for c1 and c2 (same hierarchy, lambda=0)', () => {
     const g = createSlimaniExample1();
-    expect(simTBK(g, 'c1', 'c2')).toBeCloseTo(0, 2);
+    expect(simTBK(g, 'c1', 'c2')).toBeCloseTo(0.4, 2);
   });
 
   it('returns expected value for c2 and c3 (neighborhood, lambda=1)', () => {

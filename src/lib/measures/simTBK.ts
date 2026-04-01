@@ -53,7 +53,7 @@ export const simTBK: MeasureFunction = (graph, concept1, concept2, options = {})
       const N = depthLCA;
 
       const wuPalmerFactor = (2 * N) / (N1 + N2);
-      const PF = (1 - lambda) * (Math.min(N1, N2) - N) + lambda * (1 / (Math.abs(N1 - N2) + 1));
+      const PF = lambda === 0 ? 1 : (1 / (Math.abs(N1 - N2) + 1));
       const score = wuPalmerFactor * PF;
 
       bestScore = Math.max(bestScore, score);

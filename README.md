@@ -111,8 +111,9 @@ where:
 
 - the first multiplying factor is the Wu-Palmer function
 - $N_1$, $N_2$ and $N$ are, respectively, the depths of nodes $c_1$, $c_2$ and of their LCS
-- $$PF$$ is the penalization factor given by
-  - $$PF(c_1, c_2) = (1-\lambda) \cdot (\mathrm{min}(N_1,N_2)-N)+\lambda \cdot (|N1-N2|+1)^{-1}$$ 
+- $$PF$$ is the penalization factor[^1] given by
+  - if $$\lambda = 0$$: 1
+  - if $$\lambda = 1$$: $$\frac{1}{|N1-N2|+1}^$$ 
 - $$\lambda$$ is 
   - 0 when $c_1$ and $c_2$ are in the same hierarchy
   - 1 when $c_1$ and $c_2$ are two concepts in neighborhood
@@ -217,3 +218,5 @@ Additional options for Hirst-St-Onge:
 - [14] V. Pekar and S. Staab, "Taxonomy learning-factoring the structure of a taxonomy into a semantic classification decision," in COLING 2002: The 19th International Conference on Computational Linguistics, 2002.
 - [15] J. Zhong, H. Zhu, J. Li, and Y. Yu, "Conceptual graph matching for semantic search," in International Conference on Conceptual Structures, pp. 92–106, 2002.
 - [16] T. Slimani, B. B. Yaghlane, and K. Mellouli, "A New Similarity Measure Based on Edge Counting," World Academy of Science, Engineering and Technology, vol. 23, no. 2006, pp. 34–38, 2006.
+
+[^1]: The formula in the original paper seems to have an error, so we here adapted it to match the description and examples later given in the paper.
