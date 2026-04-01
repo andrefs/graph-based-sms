@@ -129,6 +129,7 @@ export interface TestCase {
     resnikEdge: number;
     wuPalmer: number;
     pekarStaab: number;
+    simTBK: number;
     zhong: number;
     leacockChodorow: number;
     hirstStOnge: number;
@@ -146,6 +147,7 @@ export const testCases: TestCase[] = [
       resnikEdge: 6,
       wuPalmer: 1,
       pekarStaab: 1,
+      simTBK: 1,
       zhong: 1 / Math.pow(2, 2),
       leacockChodorow: Math.log(6),
       hirstStOnge: 8,
@@ -161,6 +163,7 @@ export const testCases: TestCase[] = [
       resnikEdge: 5,
       wuPalmer: 2 / 3,
       pekarStaab: 0.5,
+      simTBK: 2 / 3,
       zhong: 1 / Math.pow(2, 1) - 1 / (2 * Math.pow(2, 1)) - 1 / (2 * Math.pow(2, 2)),
       leacockChodorow: Math.log(6) - Math.log(2),
       hirstStOnge: 7,
@@ -176,6 +179,7 @@ export const testCases: TestCase[] = [
       resnikEdge: 4,
       wuPalmer: 0,
       pekarStaab: 0,
+      simTBK: 0,
       zhong: 0,
       leacockChodorow: Math.log(6) - Math.log(3),
       hirstStOnge: 6,
@@ -191,6 +195,7 @@ export const testCases: TestCase[] = [
       resnikEdge: 4,
       wuPalmer: 0.5,
       pekarStaab: 1 / 3,
+      simTBK: 0.5,
       zhong: 1 / Math.pow(2, 1) - 2 * (1 / (2 * Math.pow(2, 2))),
       leacockChodorow: Math.log(6) - Math.log(3),
       hirstStOnge: 5,
@@ -206,6 +211,7 @@ export const testCases: TestCase[] = [
       resnikEdge: 2,
       wuPalmer: 0,
       pekarStaab: 0,
+      simTBK: 0,
       zhong: 0,
       leacockChodorow: Math.log(6) - Math.log(5),
       hirstStOnge: 3,
