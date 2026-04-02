@@ -277,5 +277,8 @@ Additional options for Hirst-St-Onge:
 - [16] T. Slimani, B. B. Yaghlane, and K. Mellouli, "A New Similarity Measure Based on Edge Counting," World Academy of Science, Engineering and Technology, vol. 23, no. 2006, pp. 34–38, 2006.
 - [17] Y. Li, D. McLean, Z. A. Bandar, J. D. O'shea, and K. Crockett, "Sentence Similarity Based on Semantic Nets and Corpus Statistics," IEEE transactions on knowledge and data engineering, vol. 18, no. 8, pp. 1138–1150, 2006.
 - [18] D. Sánchez, M. Batet, D. Isern, and A. Valls, "Ontology-based semantic similarity: A new feature-based approach," Expert systems with applications, vol. 39, no. 9, pp. 7718–7728, 2012.
+- [19] P. Resnik, "Using Information Content to Evaluate Semantic Similarity in a Taxonomy," in Proceedings of the 14th International Joint Conference on Artificial Intelligence-Volume 1, 1995, pp. 448--453.
+- [20] J. J. Jiang and D. W. Conrath, "Semantic similarity based on corpus statistics and lexical taxonomy," in Proceedings of the 10th research on computational linguistics international conference, 1997, pp. 19--33.
+- [21] D. Lin, "An Information-Theoretic Definition of Similarity," in Proceedings of the Fifteenth International Conference on Machine Learning, 1998, pp. 296--304.
 
 [^1]: The formula in the original paper seems to have an error, so we here adapted it to match the description and examples later given in the paper.
