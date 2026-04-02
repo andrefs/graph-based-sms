@@ -4,39 +4,37 @@ import { getAncestorSet } from '../helpers';
 export const sanchez: MeasureFunction = (graph, concept1, concept2, options = {}) => {
   const { TFSanchez, predicates } = options as { TFSanchez?: Map<string, Set<string>>; predicates?: string | string[] };
 
-  let set1: Set<string>;
-  let set2: Set<string>;
+  let set_c1: Set<string>;
+  let set_c2: Set<string>;
 
   if (TFSanchez && TFSanchez.has(concept1) && TFSanchez.has(concept2)) {
-    set1 = TFSanchez.get(concept1)!;
-    set2 = TFSanchez.get(concept2)!;
+    set_c1 = TFSanchez.get(concept1)!;
+    set_c2 = TFSanchez.get(concept2)!;
   } else {
-    set1 = getAncestorSet(graph, concept1, predicates);
-    set2 = getAncestorSet(graph, concept2, predicates);
+    set_c1 = getAncestorSet(graph, concept1, predicates);
+    set_c2 = getAncestorSet(graph, concept2, predicates);
   }
 
-  if (set1.size === 0 || set2.size === 0) {
-    return 0;
+  if (set_c1.size === 0 || set_c2.size === 0) {
+    // should never happen
+    return 1;
   }
 
-  const diff1 = new Set<string>();
-  for (const item of set1) {
-    if (!set2.has(item)) diff1.add(item);
+  const diff_c1_c2 = new Set<string>();
+  for (const item of set_c1) {
+    if (!set_c2.has(item)) diff_c1_c2.add(item);
   }
 
-  const diff2 = new Set<string>();
-  for (const item of set2) {
-    if (!set1.has(item)) diff2.add(item);
+  const diff_c2_c1 = new Set<string>();
+  for (const item of set_c2) {
+    if (!set_c1.has(item)) diff_c2_c1.add(item);
   }
+  const intersection = new Set([...set_c1].filter(x => set_c2.has(x)));
+  const denominator = diff_c1_c2.size + diff_c2_c1.size + intersection.size;
 
-  const A = diff1.size + diff2.size;
-  const intersection = new Set([...set1].filter(x => set2.has(x)));
-  const B = intersection.size;
-
-  const denominator = A + B;
   if (denominator === 0) {
     return 0;
   }
 
-  return Math.log2(1 + A / denominator);
+  return Math.log2(1 + (diff_c1_c2.size + diff_c2_c1.size) / denominator);
 };

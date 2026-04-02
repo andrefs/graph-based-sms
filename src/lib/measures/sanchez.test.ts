@@ -64,7 +64,7 @@ describe('sanchez', () => {
   });
 
   it('handles nonexistent nodes gracefully', () => {
-    expect(sanchez(g, 'nonexistent1', 'nonexistent2')).toBe(0);
+    expect(sanchez(g, 'nonexistent1', 'nonexistent2')).toBe(1);
   });
 
   describe('paper ontology (Sánchez et al. 2012)', () => {
