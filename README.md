@@ -27,6 +27,7 @@ import {
   zhong,
   simTBK,
   li,
+  sanchez,
 } from 'graph-based-sms';
 
 const graph = new MultiDirectedGraph();
@@ -71,6 +72,9 @@ simTBK(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.5
 
 // Li et al. (optional alpha and beta)
 li(graph, 'dog', 'cat'); // 0.283...
+
+// Sánchez et al. (dissimilarity)
+sanchez(graph, 'dog', 'cat'); // 0.585...
 ```
 
 ## Semantic Measures
@@ -226,7 +230,19 @@ where:
 
 **Source:** Equation (14) in p. 122 in Batet et al. (2011). Also Equation (5), p. 884 in McInnes et al. (2014).
 
+#### Sánchez et al.
 
+A measure of *dissimilarity* given by the cardinality of the set of differential features between both nodes:
+
+$$d(c_1,c_2) = log_2  \left(1+   \frac{|\phi(c_1) \backslash \phi(c_2)| +|\phi(c_2) \backslash \phi(c_1)|}{|\phi(c_1) \backslash \phi(c_2)| +|\phi(c_2) \backslash \phi(c_1)| + |\phi(c_1) \cap \phi(c_2)|} \right) $$
+
+where:
+
+- $$\phi(a)$$ are the *taxonomical features* (i.e. the subsumers) of node $$a$$
+- 
+- $$\phi(a) \backslash \phi(b)$$ represents the subsumers of $$a$$ that are not subsumers of $$b$$
+
+**Source:** Equation (24), p. 7723 in Sánchez et al. (2012).
 
 ## Options
 
@@ -260,5 +276,6 @@ Additional options for Hirst-St-Onge:
 - [15] J. Zhong, H. Zhu, J. Li, and Y. Yu, "Conceptual graph matching for semantic search," in International Conference on Conceptual Structures, pp. 92–106, 2002.
 - [16] T. Slimani, B. B. Yaghlane, and K. Mellouli, "A New Similarity Measure Based on Edge Counting," World Academy of Science, Engineering and Technology, vol. 23, no. 2006, pp. 34–38, 2006.
 - [17] Y. Li, D. McLean, Z. A. Bandar, J. D. O'shea, and K. Crockett, "Sentence Similarity Based on Semantic Nets and Corpus Statistics," IEEE transactions on knowledge and data engineering, vol. 18, no. 8, pp. 1138–1150, 2006.
+- [18] D. Sánchez, M. Batet, D. Isern, and A. Valls, "Ontology-based semantic similarity: A new feature-based approach," Expert systems with applications, vol. 39, no. 9, pp. 7718–7728, 2012.
 
 [^1]: The formula in the original paper seems to have an error, so we here adapted it to match the description and examples later given in the paper.
