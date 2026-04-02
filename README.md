@@ -213,7 +213,7 @@ where:
 - $$\beta > 0$$ is used to tune the depth factor $$df$$
 - $$\alpha \geqslant 0$$ controls the importance of the taxonomic distance
 
-**Source:** Equation (5), p. 14 in Li et al. (2006). Also Equation (3.19), p. 90 in  in Harispe et al. (2015).
+**Source:** Equation (5), p. 14 in Li et al. (2006). Also Equation (3.19), p. 90 in Harispe et al. (2015).
 
 
 ### Feature-based
@@ -243,6 +243,47 @@ where:
 - $$\phi(a) \backslash \phi(b)$$ represents the subsumers of $$a$$ that are not subsumers of $$b$$
 
 **Source:** Equation (24), p. 7723 in Sánchez et al. (2012).
+
+### Information-content-based
+
+These measures take into account the information content (IC) of each node. This metric can be calculated by measuring the frequency of each node *and their homonyms* in a corpus; or by counting the number of descendants of each node in the graph.
+
+#### Resnik (IC)
+
+The similarity between two nodes is given simply by the information content of their LCS.
+
+$$m(c_1,c_2) = \mathrm{max}[-\mathrm{log~ p}(c)], c \in {S(c_1,c_2)]}$$
+
+where:
+
+- $$\mathrm{p}(c)$$ is the probability of encountering an instance of concept $$c$$
+- $$S(c_1,c_2)$$ is the set of subsumers of both $$c_1$$ and $$c_2$$.
+
+In practice, this is often simplified as $$m(c_1,c_2) = IC(LCS(c_1,c_2))$$, with $$IC$$ being a function that maps each node to their information content value.
+
+**Source:** Equation (1), p. 449 in Resnik (1995). Also Equation (1), p. 97 in Resnik 1999; Equation (16), p. 7721 in Sánchez et al. (2012).
+
+#### Lin
+
+Takes the IC-based measure from Resnik but also incorporates the IC from each node:
+
+$$m(c_1,c_2) = \frac{2 \times \mathrm{resnik_{IC}}(c_1,c_2)}{(IC(c_1)+IC(c_2))}$$
+
+where:
+
+- $$\mathrm{resnik_{IC}}(c_1,c_2)}$$ is the IC-based measure from Resnik
+- $$IC(a)$$ is the information content value of node $$a$$
+
+**Source:** Unnumbered equation on the sixth page in Lin (1998). Also Equation (17), p. 7721 in Sánchez et al. (2012); Equation (3.29), p. 94 in Harispe et al. (2015).
+
+#### Jiang and Conrath
+
+Similar to Lin, this measure improves upon the Resnik IC measure by also including the nodes ICs.
+
+$$m(c_1,c_2) = IC(c_1) + IC(c_2) - 2 \cdot \mathrm{resnik_{IC}}(c_1,c_2)$$
+
+**Source:**  Equation (15), p. 26 in Jiang and Conrath (1997). Also Equation (18), p. 7721 in Sánchez et al. (2012); Equation (3.30), p. 94 in Harispe et al. (2015).
+
 
 ## Options
 
