@@ -1,6 +1,5 @@
 import type { MeasureFunction } from '../types';
 import { getAncestorSet } from '../helpers';
-import { MultiDirectedGraph } from 'graphology';
 
 export const sanchez: MeasureFunction = (graph, concept1, concept2, options = {}) => {
   const { TFSanchez, predicates } = options as { TFSanchez?: Map<string, Set<string>>; predicates?: string | string[] };
