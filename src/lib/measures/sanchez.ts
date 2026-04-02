@@ -33,7 +33,7 @@ export const sanchez: MeasureFunction = (graph, concept1, concept2, options = {}
   const denominator = diff_c1_c2.size + diff_c2_c1.size + intersection.size;
 
   if (denominator === 0) {
-    return 0;
+    return 1;
   }
 
   return Math.log2(1 + (diff_c1_c2.size + diff_c2_c1.size) / denominator);
