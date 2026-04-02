@@ -5,6 +5,7 @@ export { MultiDirectedGraph as Graph };
 export interface ExtraOptions {
   predicates?: string | string[];
   maxDepth?: number;
+  ic?: Map<string, number>;
   [key: string]: any;
 }
 

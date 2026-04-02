@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { resnikEdge } from './resnikEdge';
+import { resnikEdge } from './resnikPath';
 import { runMeasureTests, MAX_DEPTH, createTaxonomy } from './measures.test-helpers';
 
 runMeasureTests('resnikEdge', resnikEdge, { maxDepth: MAX_DEPTH });

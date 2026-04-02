@@ -18,6 +18,7 @@ import {
   shortestPath,
   radaSimilarity,
   resnikEdge,
+  resnikIC,
   wuPalmer,
   pekarStaab,
   leacockChodorow,
@@ -28,6 +29,8 @@ import {
   simTBK,
   li,
   sanchez,
+  lin,
+  jiangConrath,
 } from 'graph-based-sms';
 
 const graph = new MultiDirectedGraph();
@@ -75,6 +78,16 @@ li(graph, 'dog', 'cat'); // 0.283...
 
 // Sánchez et al. (dissimilarity)
 sanchez(graph, 'dog', 'cat'); // 0.585...
+
+// Resnik IC (requires ic Map)
+const ic = new Map([['animal', 0], ['mammal', 1], ['bird', 1], ['dog', 2], ['cat', 2]]);
+resnikIC(graph, 'dog', 'cat', { ic }); // 1
+
+// Lin (requires ic Map)
+lin(graph, 'dog', 'cat', { ic }); // 0.5
+
+// Jiang-Conrath (requires ic Map)
+jiangConrath(graph, 'dog', 'cat', { ic }); // 2
 ```
 
 ## Semantic Measures
@@ -291,6 +304,7 @@ All measures accept an optional `ExtraOptions` object:
 
 - `predicates?: string | string[]` - Filter edges by predicate(s)
 - `maxDepth?: number` - Maximum depth of the taxonomy (required for Resnik Edge and Leacock-Chodorow)
+- `ic?: Map<string, number>` - Information content values for nodes (required for Resnik IC, Lin, and Jiang-Conrath)
 
 Additional options for Hirst-St-Onge:
 
