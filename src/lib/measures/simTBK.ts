@@ -33,13 +33,7 @@ export const simTBK: MeasureFunction = (graph, concept1, concept2, options = {})
     return 0;
   }
 
-  let lambda: number;
-  if (options.lambda !== undefined) {
-    lambda = options.lambda;
-  } else {
-    lambda = computeLambda(graph, concept1, concept2, options.predicates);
-  }
-
+  let lambda = computeLambda(graph, concept1, concept2, options.predicates);
   let bestScore = 0;
 
   for (const lca of lcas) {

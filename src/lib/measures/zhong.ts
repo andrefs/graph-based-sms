@@ -2,7 +2,7 @@ import type { ExtraOptions, MeasureFunction } from '../types';
 import { getDepth, findLCAs } from '../helpers';
 
 export const zhong: MeasureFunction = (graph, concept1, concept2, options = {}) => {
-  const k = options.k ?? 2;
+  const k = options.kZhong ?? 2;
 
   if (k <= 1) {
     return 0;

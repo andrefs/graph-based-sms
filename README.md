@@ -56,7 +56,7 @@ wuPalmer(graph, 'dog', 'cat'); // 0.5
 leacockChodorow(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.693...
 
 // Hirst-St-Onge
-hirstStOnge(graph, 'dog', 'cat', { C: 8, k: 1, maxLength: 5 }); // 5
+hirstStOnge(graph, 'dog', 'cat', { C: 8, kHSO: 1, maxLength: 5 }); // 5
 
 // Pekar-Staab
 pekarStaab(graph, 'dog', 'cat'); // 0.333...
@@ -68,7 +68,7 @@ nguyenAlMubaid(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.693...
 batet(graph, 'dog', 'cat'); // 1
 
 // Zhong (requires k)
-zhong(graph, 'dog', 'cat', { k: 2 }); // 0.125
+zhong(graph, 'dog', 'cat', { kZhong: 2 }); // 0.125
 
 // simTBK (requires maxDepth)
 simTBK(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.5
@@ -259,7 +259,7 @@ where:
 
 ### Information-content-based
 
-These measures take into account the information content (IC) of each node. This metric can be calculated by measuring the frequency of each node *and their homonyms* in a corpus; or by counting the number of descendants of each node in the graph.
+These measures take into account the information content (IC) of each node. This metric can be calculated using external sources (extrinsic IC), e.g. by measuring the frequency of each node and their homonym* in a corpus; or from the graph itself (intrinsic IC), e.g. by counting the number of descendants of each node in the graph.
 
 #### Resnik (IC)
 
@@ -305,12 +305,12 @@ All measures accept an optional `ExtraOptions` object:
 - `predicates?: string | string[]` - Filter edges by predicate(s)
 - `maxDepth?: number` - Maximum depth of the taxonomy (required for Resnik Edge and Leacock-Chodorow)
 - `ic?: Map<string, number>` - Information content values for nodes (required for Resnik IC, Lin, and Jiang-Conrath)
-
-Additional options for Hirst-St-Onge:
-
-- `C?: number` - Constant (default: 8)
-- `k?: number` - Direction change weight (default: 1)
-- `maxLength?: number` - Maximum path length (default: 5)
+- `kZhong?: number` - Depth factor for Zhong (default: 2)
+- `alpha?: number` - Distance weight for Li et al. (default: 0.2)
+- `beta?: number` - Depth factor for Li et al. (default: 0.45)
+- `C?: number` - Constant for Hirst-St-Onge (default: 8)
+- `kHSO?: number` - Direction change weight for Hirst-St-Onge (default: 1)
+- `maxLength?: number` - Maximum path length for Hirst-St-Onge (default: 5)
 
 ## References
 

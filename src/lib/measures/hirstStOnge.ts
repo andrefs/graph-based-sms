@@ -43,7 +43,7 @@ function getValidEdges(graph: MultiDirectedGraph, from: string, whitelist?: Set<
 
 interface HirstStOngeOptions extends ExtraOptions {
   C?: number;
-  k?: number;
+  kHSO?: number;
   maxLength?: number; // Maximum path length
 };
 
@@ -57,7 +57,7 @@ export const hirstStOnge: MeasureFunction = (
   }
 
   const C = options?.C ?? 8;
-  const k = options?.k ?? 1;
+  const kHSO = options?.kHSO ?? 1;
   const maxLength = options?.maxLength ?? 5;
   const predicates = options?.predicates
     ? new Set(Array.isArray(options.predicates)
@@ -81,7 +81,7 @@ export const hirstStOnge: MeasureFunction = (
     if (length > maxLength!) continue;
 
     if (node === concept2) {
-      const score = C - length - k * d;
+      const score = C - length - kHSO * d;
       bestScore = Math.max(bestScore, score);
       continue;
     }
