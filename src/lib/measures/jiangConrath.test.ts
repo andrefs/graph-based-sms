@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createTaxonomy, MAX_DEPTH } from './measures.test-helpers';
+import { createTaxonomy } from './measures.test-helpers';
 import { jiangConrath } from './jiangConrath';
 
 const createICMap = () => {

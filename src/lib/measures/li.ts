@@ -1,6 +1,5 @@
 import type { MeasureFunction } from '../types';
 import { getDepth, findLCAs, getShortestPathLength } from '../helpers';
-import { MultiDirectedGraph } from 'graphology';
 
 interface LiOptions {
   alpha?: number;

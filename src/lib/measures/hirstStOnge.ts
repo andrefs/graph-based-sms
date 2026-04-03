@@ -45,7 +45,7 @@ interface HirstStOngeOptions extends ExtraOptions {
   C?: number;
   kHSO?: number;
   maxLength?: number; // Maximum path length
-};
+}
 
 export const hirstStOnge: MeasureFunction = (
   graph: MultiDirectedGraph,

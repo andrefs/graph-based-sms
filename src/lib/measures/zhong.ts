@@ -1,4 +1,4 @@
-import type { ExtraOptions, MeasureFunction } from '../types';
+import type { MeasureFunction } from '../types';
 import { getDepth, findLCAs } from '../helpers';
 
 export const zhong: MeasureFunction = (graph, concept1, concept2, options = {}) => {
