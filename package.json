@@ -1,6 +1,6 @@
 {
   "name": "graph-based-sms",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Graph-based semantic similarity measures using graphology graphs",
   "main": "dist/index.js",
   "scripts": {
