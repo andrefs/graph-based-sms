@@ -57,7 +57,7 @@ export const hirstStOnge: MeasureFunction = (
   }
 
   const C = options?.C ?? 8;
-  const kHSO = options?.kHSO ?? 1;
+  const k = options?.kHSO ?? 1;
   const maxLength = options?.maxLength ?? 5;
   const predicates = options?.predicates
     ? new Set(Array.isArray(options.predicates)
@@ -81,7 +81,7 @@ export const hirstStOnge: MeasureFunction = (
     if (length > maxLength!) continue;
 
     if (node === concept2) {
-      const score = C - length - kHSO * d;
+      const score = C - length - k * d;
       bestScore = Math.max(bestScore, score);
       continue;
     }
