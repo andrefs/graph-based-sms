@@ -10,6 +10,15 @@ function getEdgeAttributes(graph: MultiDirectedGraph, source: string, target: st
   return graph.getEdgeAttributes(edges[0]);
 }
 
+/**
+ * Get edge attributes in either direction.
+ * Tries (source, target) first, then (target, source) if not found.
+ * This is needed because depending on edgeDirection, the edge may be stored in the opposite orientation.
+ */
+function getEdgeAttributesBothWays(graph: MultiDirectedGraph, source: string, target: string): Attributes | null {
+  return getEdgeAttributes(graph, source, target) || getEdgeAttributes(graph, target, source);
+}
+
 
 /**
  * BFS-based shortest path with edge filtering
@@ -122,7 +131,8 @@ export function getDepth(
 
     for (const neighbor of getUpNeighbors(current)) {
       if (!visited.has(neighbor)) {
-        const edge = getEdgeAttributes(graph, current, neighbor);
+        // Edge may be stored in either direction
+        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
         visited.add(neighbor);
         queue.push([neighbor, depth + 1]);
@@ -167,7 +177,7 @@ export function findLCAs(
     ancestors1.add(current);
     for (const neighbor of getUpNeighbors(current)) {
       if (!ancestors1.has(neighbor)) {
-        const edge = getEdgeAttributes(graph, current, neighbor);
+        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
         queue1.push(neighbor);
       }
@@ -187,7 +197,7 @@ export function findLCAs(
     }
     for (const neighbor of getUpNeighbors(current)) {
       if (!visited2.has(neighbor)) {
-        const edge = getEdgeAttributes(graph, current, neighbor);
+        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
         visited2.add(neighbor);
         queue2.push(neighbor);
@@ -232,7 +242,7 @@ export function getAncestorSet(
 
     for (const neighbor of getUpNeighbors(current)) {
       if (!ancestors.has(neighbor)) {
-        const edge = getEdgeAttributes(graph, current, neighbor);
+        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
         queue.push(neighbor);
       }
@@ -276,7 +286,7 @@ export function getPathLengthToAncestor(
 
     for (const neighbor of getUpNeighbors(current)) {
       if (!visited.has(neighbor)) {
-        const edge = getEdgeAttributes(graph, current, neighbor);
+        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
         visited.add(neighbor);
         queue.push([neighbor, dist + 1]);
