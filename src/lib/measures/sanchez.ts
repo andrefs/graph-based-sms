@@ -1,4 +1,4 @@
-import type { EdgeDirection, ExtraOptions, MeasureFunction } from '../types';
+import type { EdgeDirection, MeasureFunction } from '../types';
 import { getAncestorSet } from '../helpers';
 
 export const sanchez: MeasureFunction = (graph, concept1, concept2, options = {}) => {

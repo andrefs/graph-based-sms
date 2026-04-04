@@ -277,7 +277,7 @@ describe('findLCAs edge cases', () => {
     g.addEdge('B', 'root', { predicate: 'is-a' });
     g.addEdge('C', 'A', { predicate: 'is-a' });
     g.addEdge('C', 'B', { predicate: 'is-a' });
-    const lcas = findLCAs(g, 'A', 'B');
+    const lcas = findLCAs(g, 'A', 'B', undefined, 'childToParent');
     expect(lcas).toContain('root');
   });
 });

@@ -60,7 +60,7 @@ describe('sanchez (default parentToChild)', () => {
   });
 
   it('returns correct value for parent-child (mammal, dog)', () => {
-    expect(sanchez(g, 'mammal', 'dog')).toBeCloseTo(0.41503749955958675, 5);
+    expect(sanchez(g, 'mammal', 'dog')).toBeCloseTo(Math.log2(4/3), 5);
   });
 
   it('returns correct value for grandparent-grandchild (animal, dog)', () => {

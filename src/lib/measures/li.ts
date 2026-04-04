@@ -1,4 +1,4 @@
-import type { EdgeDirection, ExtraOptions, MeasureFunction } from '../types';
+import type { EdgeDirection, MeasureFunction } from '../types';
 import { getDepth, findLCAs, getShortestPathLength } from '../helpers';
 
 interface LiOptions {

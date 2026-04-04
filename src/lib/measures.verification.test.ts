@@ -55,21 +55,21 @@ describe('academic paper verification', () => {
   it('Resnik (1999): edge-based measure', () => {
     // Equation (5): m(c1,c2) = 2*D - length(sp)
     // D = 3 (maxDepth from animal to dog/cat/penguin)
-    expect(resnikEdge(g, 'dog', 'cat', { maxDepth: 3 })).toBe(4); // 2*3 - 2
+    expect(resnikEdge(g, 'dog', 'cat', { maxDepth: 3, edgeDirection: 'childToParent' })).toBe(4); // 2*3 - 2
   });
 
   it('Wu & Palmer (1994): LCS depth measure', () => {
     // Unnumbered eq, p.136: 2*depth(LCS) / (2*depth(LCS) + path1 + path2)
     // dog-cat: LCS=mammal(depth=1), path1=1, path2=1
     // = 2*1 / (2*1 + 1 + 1) = 2/4 = 0.5
-    expect(wuPalmer(g, 'dog', 'cat')).toBeCloseTo(0.5, 10);
+    expect(wuPalmer(g, 'dog', 'cat', { edgeDirection: 'childToParent' })).toBeCloseTo(0.5, 10);
   });
 
   it('Leacock & Chodorow (1998): path-based similarity', () => {
     // Unnumbered eq, p.275: log(2D) - log(N)
     // dog-cat: N=3 (nodes {dog,mammal,cat}), D=3
     // = log(6) - log(3)
-    expect(leacockChodorow(g, 'dog', 'cat', { maxDepth: 3 }))
+    expect(leacockChodorow(g, 'dog', 'cat', { maxDepth: 3, edgeDirection: 'childToParent' }))
       .toBeCloseTo(Math.log(6) - Math.log(3), 10);
   });
 
@@ -77,6 +77,6 @@ describe('academic paper verification', () => {
     // m(c1,c2) = C - length(sp) - k*d
     // dog-cat: path dog->mammal->cat, length=2, 1 direction change (UP->DOWN)
     // = 8 - 2 - 1*1 = 5
-    expect(hirstStOnge(g, 'dog', 'cat', { C: 8, k: 1 })).toBe(5);
+    expect(hirstStOnge(g, 'dog', 'cat', { C: 8, k: 1, edgeDirection: 'childToParent' })).toBe(5);
   });
 });
