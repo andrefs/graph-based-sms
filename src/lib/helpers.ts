@@ -1,9 +1,10 @@
 import type { ExtraOptions } from './types';
 import { MultiDirectedGraph } from 'graphology';
+import { Attributes } from 'graphology-types';
 
 export type { ExtraOptions };
 
-function getEdgeAttributes(graph: MultiDirectedGraph, source: string, target: string): unknown | null {
+function getEdgeAttributes(graph: MultiDirectedGraph, source: string, target: string): Attributes | null {
   const edges = graph.edges(source, target);
   if (edges.length === 0) return null;
   return graph.getEdgeAttributes(edges[0]);
@@ -229,8 +230,8 @@ export function getPathLengthToAncestor(
     ? Array.isArray(predicates) ? predicates : [predicates]
     : null;
 
-  const filter = predArray ? (edge: unknown) => {
-    const edgePred = (edge as { predicate?: string }).predicate;
+  const filter = predArray ? (edge: Attributes) => {
+    const edgePred = edge.predicate;
     if (!edgePred) return false;
     return predArray.includes(edgePred);
   } : undefined;
