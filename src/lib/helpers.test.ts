@@ -98,17 +98,17 @@ describe('getDepth', () => {
 
   it('returns 0 for root node', () => {
     const g = createTaxonomy();
-    expect(getDepth(g, 'animal')).toBe(0);
+    expect(getDepth(g, 'animal', undefined, 'childToParent')).toBe(0);
   });
 
   it('returns 1 for direct child of root', () => {
     const g = createTaxonomy();
-    expect(getDepth(g, 'mammal')).toBe(1);
+    expect(getDepth(g, 'mammal', undefined, 'childToParent')).toBe(1);
   });
 
   it('returns 2 for grandchild', () => {
     const g = createTaxonomy();
-    expect(getDepth(g, 'dog')).toBe(2);
+    expect(getDepth(g, 'dog', undefined, 'childToParent')).toBe(2);
   });
 
   it('returns 0 for nonexistent node', () => {
@@ -131,31 +131,31 @@ describe('findLCAs', () => {
 
   it('returns node itself for same node', () => {
     const g = createTaxonomy();
-    expect(findLCAs(g, 'dog', 'dog')).toContain('dog');
+    expect(findLCAs(g, 'dog', 'dog', undefined, 'childToParent')).toContain('dog');
   });
 
   it('returns parent for siblings', () => {
     const g = createTaxonomy();
-    const result = findLCAs(g, 'dog', 'cat');
+    const result = findLCAs(g, 'dog', 'cat', undefined, 'childToParent');
     expect(result).toContain('mammal');
   });
 
   it('returns root for cousins', () => {
     const g = createTaxonomy();
-    const result = findLCAs(g, 'dog', 'penguin');
+    const result = findLCAs(g, 'dog', 'penguin', undefined, 'childToParent');
     expect(result).toContain('animal');
   });
 
   it('returns ancestor for parent-child', () => {
     const g = createTaxonomy();
-    const result = findLCAs(g, 'dog', 'mammal');
+    const result = findLCAs(g, 'dog', 'mammal', undefined, 'childToParent');
     expect(result).toContain('mammal');
   });
 
   it('returns empty array for disconnected nodes', () => {
     const g = createTaxonomy();
     g.addNode('plant');
-    expect(findLCAs(g, 'dog', 'plant')).toEqual([]);
+    expect(findLCAs(g, 'dog', 'plant', undefined, 'childToParent')).toEqual([]);
   });
 });
 
@@ -172,27 +172,27 @@ describe('getPathLengthToAncestor', () => {
 
   it('returns 0 when node is the ancestor', () => {
     const g = createTaxonomy();
-    expect(getPathLengthToAncestor(g, 'mammal', 'mammal')).toBe(0);
+    expect(getPathLengthToAncestor(g, 'mammal', 'mammal', undefined, 'childToParent')).toBe(0);
   });
 
   it('returns 1 for direct parent', () => {
     const g = createTaxonomy();
-    expect(getPathLengthToAncestor(g, 'dog', 'mammal')).toBe(1);
+    expect(getPathLengthToAncestor(g, 'dog', 'mammal', undefined, 'childToParent')).toBe(1);
   });
 
   it('returns 2 for grandparent', () => {
     const g = createTaxonomy();
-    expect(getPathLengthToAncestor(g, 'dog', 'animal')).toBe(2);
+    expect(getPathLengthToAncestor(g, 'dog', 'animal', undefined, 'childToParent')).toBe(2);
   });
 
   it('returns null when not an ancestor', () => {
     const g = createTaxonomy();
-    expect(getPathLengthToAncestor(g, 'dog', 'bird')).toBeNull();
+    expect(getPathLengthToAncestor(g, 'dog', 'bird', undefined, 'childToParent')).toBeNull();
   });
 
   it('returns null for nonexistent ancestor', () => {
     const g = createTaxonomy();
-    expect(getPathLengthToAncestor(g, 'dog', 'nonexistent')).toBeNull();
+    expect(getPathLengthToAncestor(g, 'dog', 'nonexistent', undefined, 'childToParent')).toBeNull();
   });
 });
 
@@ -210,13 +210,13 @@ describe('getAncestorSet', () => {
 
   it('returns set containing node itself', () => {
     const g = createTaxonomy();
-    const result = getAncestorSet(g, 'dog');
+    const result = getAncestorSet(g, 'dog', undefined, 'childToParent');
     expect(result).toContain('dog');
   });
 
   it('returns all ancestors including self', () => {
     const g = createTaxonomy();
-    const result = getAncestorSet(g, 'dog');
+    const result = getAncestorSet(g, 'dog', undefined, 'childToParent');
     expect(result).toContain('dog');
     expect(result).toContain('mammal');
     expect(result).toContain('animal');
@@ -224,7 +224,7 @@ describe('getAncestorSet', () => {
 
   it('returns root only for root node', () => {
     const g = createTaxonomy();
-    const result = getAncestorSet(g, 'animal');
+    const result = getAncestorSet(g, 'animal', undefined, 'childToParent');
     expect(result).toEqual(new Set(['animal']));
   });
 
@@ -239,7 +239,7 @@ describe('getAncestorSet', () => {
     g.addNode('feline');
     g.addEdge('feline', 'mammal', { predicate: 'related-to' });
     g.addEdge('cat', 'feline', { predicate: 'is-a' });
-    const result = getAncestorSet(g, 'cat', 'is-a');
+    const result = getAncestorSet(g, 'cat', 'is-a', 'childToParent');
     expect(result).toContain('cat');
     expect(result).toContain('feline');
     expect(result).toContain('mammal');

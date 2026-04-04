@@ -2,9 +2,14 @@ import { MultiDirectedGraph } from 'graphology';
 
 export { MultiDirectedGraph as Graph };
 
+export type EdgeDirection = 'parentToChild' | 'childToParent';
+
 export interface ExtraOptions {
   /** Filter edges by predicate(s). Applies to all measures. */
   predicates?: string | string[];
+
+  /** Direction of edges in the taxonomy. 'parentToChild' means edges point from parent to child. 'childToParent' means edges point from child to parent. Default: 'parentToChild'. */
+  edgeDirection?: EdgeDirection;
 
   /** Maximum depth of the taxonomy. Required for Resnik Edge and Leacock-Chodorow. */
   maxDepth?: number;

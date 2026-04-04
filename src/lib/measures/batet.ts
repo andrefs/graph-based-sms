@@ -1,8 +1,10 @@
-import type { ExtraOptions, MeasureFunction } from '../types';
+import type { EdgeDirection, ExtraOptions, MeasureFunction } from '../types';
+import { MultiDirectedGraph } from 'graphology';
 import { getAncestorSet } from '../helpers';
 
 export const batet: MeasureFunction = (graph, concept1, concept2, options: ExtraOptions = {}) => {
-  const value = _batetCommonInfo(graph, concept1, concept2, options)
+  const edgeDirection: EdgeDirection = options.edgeDirection ?? 'parentToChild';
+  const value = _batetCommonInfo(graph, concept1, concept2, options, edgeDirection)
 
   if (value <= 0) {
     return 0;
@@ -11,11 +13,11 @@ export const batet: MeasureFunction = (graph, concept1, concept2, options: Extra
   return -Math.log2(value) || 0;
 };
 
-export const _batetCommonInfo: MeasureFunction = (graph, concept1, concept2, options: ExtraOptions = {}) => {
+export function _batetCommonInfo(graph: MultiDirectedGraph, concept1: string, concept2: string, options: ExtraOptions, edgeDirection: EdgeDirection): number {
   const { predicates } = options;
 
-  const ancestors1 = getAncestorSet(graph, concept1, predicates);
-  const ancestors2 = getAncestorSet(graph, concept2, predicates);
+  const ancestors1 = getAncestorSet(graph, concept1, predicates, edgeDirection);
+  const ancestors2 = getAncestorSet(graph, concept2, predicates, edgeDirection);
 
   if (ancestors1.size === 0 || ancestors2.size === 0) {
     return 0;

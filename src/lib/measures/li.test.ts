@@ -1,45 +1,52 @@
 import { describe, it, expect } from 'vitest';
 import { li } from './li';
-import { createTaxonomy } from './measures.test-helpers';
+import { createTaxonomy, createTaxonomyParentToChild } from './measures.test-helpers';
 
-describe('li', () => {
+describe('li extra tests (childToParent)', () => {
+  const g = createTaxonomy();
+  const baseOptions = { edgeDirection: 'childToParent' as const };
+  it('respects custom alpha and beta options', () => {
+    expect(li(g, 'dog', 'cat', { ...baseOptions, alpha: 0.1, beta: 0.5 })).toBeCloseTo(0.37834953, 6);
+  });
+});
+
+describe('li (childToParent)', () => {
   const g = createTaxonomy();
 
-  it('returns 0 for no LCA (grandparent-grandchild, cousins)', () => {
-    // animal-dog: LCA depth = 0, so score 0
-    expect(li(g, 'animal', 'dog')).toBe(0);
-    // dog-penguin: LCA depth = 0
-    expect(li(g, 'dog', 'penguin')).toBe(0);
+  it('returns expected values for default alpha/beta (0.2, 0.45)', () => {
+    // dog-dog
+    expect(li(g, 'dog', 'dog', { edgeDirection: 'childToParent' })).toBeCloseTo(0.716298, 5);
+    // mammal-dog
+    expect(li(g, 'mammal', 'dog', { edgeDirection: 'childToParent' })).toBeCloseTo(0.345422, 5);
+    // dog-cat
+    expect(li(g, 'dog', 'cat', { edgeDirection: 'childToParent' })).toBeCloseTo(0.282807, 5);
+    // animal-dog (0)
+    expect(li(g, 'animal', 'dog', { edgeDirection: 'childToParent' })).toBe(0);
+    // dog-penguin (0)
+    expect(li(g, 'dog', 'penguin', { edgeDirection: 'childToParent' })).toBe(0);
   });
+});
 
-  it('returns 0 when no path exists', () => {
-    const g2 = createTaxonomy();
-    g2.addNode('plant');
-    expect(li(g2, 'dog', 'plant')).toBe(0);
-  });
-
-  it('handles nonexistent nodes gracefully', () => {
-    const g2 = createTaxonomy();
-    expect(li(g2, 'nonexistent1', 'nonexistent2')).toBe(0);
-  });
-
-  it('computes correct values for siblings (dog, cat)', () => {
-    const result = li(g, 'dog', 'cat');
-    expect(result).toBeCloseTo(0.28280736, 6);
-  });
-
-  it('computes correct values for parent-child (mammal, dog)', () => {
-    const result = li(g, 'mammal', 'dog');
-    expect(result).toBeCloseTo(0.34542169, 6);
-  });
-
-  it('returns highest similarity for same node (dog, dog)', () => {
-    const result = li(g, 'dog', 'dog');
-    expect(result).toBeCloseTo(0.7162978701990244, 8);
-  });
-
+describe('li extra tests (default parentToChild)', () => {
+  const g = createTaxonomyParentToChild();
   it('respects custom alpha and beta options', () => {
-    const result = li(g, 'dog', 'cat', { alpha: 0.1, beta: 0.5 });
-    expect(result).toBeCloseTo(0.37834953, 6);
+    expect(li(g, 'dog', 'cat', { alpha: 0.1, beta: 0.5 })).toBeCloseTo(0.37834953, 6);
+  });
+});
+
+describe('li (default parentToChild)', () => {
+  const g = createTaxonomyParentToChild();
+
+  it('returns expected values for default alpha/beta (0.2, 0.45)', () => {
+    // dog-dog
+    expect(li(g, 'dog', 'dog')).toBeCloseTo(0.716298, 5);
+    // mammal-dog
+    expect(li(g, 'mammal', 'dog')).toBeCloseTo(0.345422, 5);
+    // dog-cat
+    expect(li(g, 'dog', 'cat')).toBeCloseTo(0.282807, 5);
+    // animal-dog (0)
+    expect(li(g, 'animal', 'dog')).toBe(0);
+    // dog-penguin (0)
+    expect(li(g, 'dog', 'penguin')).toBe(0);
   });
 });

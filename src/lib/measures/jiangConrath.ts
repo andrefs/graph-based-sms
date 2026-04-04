@@ -1,8 +1,9 @@
-import type { ExtraOptions, MeasureFunction } from '../types';
+import type { EdgeDirection, ExtraOptions, MeasureFunction } from '../types';
 import { findLCAs } from '../helpers';
 
 export const jiangConrath: MeasureFunction = (graph, concept1, concept2, options: ExtraOptions = {}) => {
   const { predicates, ic } = options;
+  const edgeDirection: EdgeDirection = options.edgeDirection ?? 'parentToChild';
 
   if (!ic) {
     return 0;
@@ -15,7 +16,7 @@ export const jiangConrath: MeasureFunction = (graph, concept1, concept2, options
     return 0;
   }
 
-  const lcas = findLCAs(graph, concept1, concept2, predicates);
+  const lcas = findLCAs(graph, concept1, concept2, predicates, edgeDirection);
 
   if (lcas.length === 0) {
     return 0;

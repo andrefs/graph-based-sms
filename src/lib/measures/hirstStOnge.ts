@@ -1,4 +1,4 @@
-import type { ExtraOptions, MeasureFunction } from '../types';
+import type { EdgeDirection, ExtraOptions, MeasureFunction } from '../types';
 import { MultiDirectedGraph } from 'graphology';
 
 type Direction =
@@ -17,10 +17,11 @@ interface State {
  *
  * @param graph - The graph to search within.
  * @param from - The starting node for which to find valid edges.
+ * @param outboundIsUp - If true, outbound edges are considered UP. If false, outbound edges are DOWN (used when edgeDirection is parentToChild).
  * @param whitelist - An optional set of predicates to filter edges. If provided, only edges with predicates in this set will be included.
  * @returns An array of objects, each containing a neighboring node and the direction of the edge (UP or DOWN).
  */
-function getValidEdges(graph: MultiDirectedGraph, from: string, whitelist?: Set<string>) {
+function getValidEdges(graph: MultiDirectedGraph, from: string, outboundIsUp: boolean, whitelist?: Set<string>) {
   if (!graph.hasNode(from)) return [];
 
   const edges: { neighbor: string, dir: Direction }[] = [];
@@ -28,18 +29,17 @@ function getValidEdges(graph: MultiDirectedGraph, from: string, whitelist?: Set<
   for (const outEdge of graph.outEdges(from)) {
     const predicate = graph.getEdgeAttribute(outEdge, 'predicate');
     if (whitelist && !whitelist.has(predicate)) continue;
-    edges.push({ neighbor: graph.target(outEdge), dir: 'UP' });
+    edges.push({ neighbor: graph.target(outEdge), dir: outboundIsUp ? 'UP' : 'DOWN' });
   }
 
   for (const inEdge of graph.inEdges(from)) {
     const predicate = graph.getEdgeAttribute(inEdge, 'predicate');
     if (whitelist && !whitelist.has(predicate)) continue;
-    edges.push({ neighbor: graph.source(inEdge), dir: 'DOWN' });
+    edges.push({ neighbor: graph.source(inEdge), dir: outboundIsUp ? 'DOWN' : 'UP' });
   }
 
   return edges;
 }
-
 
 interface HirstStOngeOptions extends ExtraOptions {
   C?: number;
@@ -59,11 +59,16 @@ export const hirstStOnge: MeasureFunction = (
   const C = options?.C ?? 8;
   const k = options?.kHSO ?? 1;
   const maxLength = options?.maxLength ?? 5;
+  const edgeDirection: EdgeDirection = options?.edgeDirection ?? 'parentToChild';
   const predicates = options?.predicates
     ? new Set(Array.isArray(options.predicates)
       ? options.predicates
       : [options.predicates])
     : undefined;
+
+  // When edgeDirection is 'childToParent' (old default), outbound edges go to parent → outbound is UP.
+  // When edgeDirection is 'parentToChild' (new default), outbound edges go to children → outbound is DOWN.
+  const outboundIsUp = edgeDirection === 'childToParent';
 
   let bestScore = 0;
 
@@ -86,7 +91,7 @@ export const hirstStOnge: MeasureFunction = (
       continue;
     }
 
-    const edges = getValidEdges(graph, node, predicates);
+    const edges = getValidEdges(graph, node, outboundIsUp, predicates);
 
     for (const { neighbor, dir } of edges) {
       if (path.includes(neighbor)) continue; // Avoid cycles
@@ -106,6 +111,4 @@ export const hirstStOnge: MeasureFunction = (
   }
 
   return Math.max(bestScore, 0);
-}
-
-
+};

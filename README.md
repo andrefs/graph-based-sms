@@ -35,10 +35,11 @@ import {
 
 const graph = new MultiDirectedGraph();
 graph.addNode('animal', 'mammal', 'bird', 'dog', 'cat');
-graph.addEdge('mammal', 'animal', { predicate: 'is-a' });
-graph.addEdge('bird', 'animal', { predicate: 'is-a' });
-graph.addEdge('dog', 'mammal', { predicate: 'is-a' });
-graph.addEdge('cat', 'mammal', { predicate: 'is-a' });
+// Edges from parent to child (default direction)
+graph.addEdge('animal', 'mammal', { predicate: 'is-a' });
+graph.addEdge('animal', 'bird', { predicate: 'is-a' });
+graph.addEdge('mammal', 'dog', { predicate: 'is-a' });
+graph.addEdge('mammal', 'cat', { predicate: 'is-a' });
 
 // Shortest path (Rada Distance)
 shortestPath(graph, 'dog', 'cat'); // 2
@@ -89,6 +90,8 @@ lin(graph, 'dog', 'cat', { ic }); // 0.5
 // Jiang-Conrath (requires ic Map)
 jiangConrath(graph, 'dog', 'cat', { ic }); // 2
 ```
+
+**Note on edge direction:** By default, this package assumes edges go from **parent to child** (`edgeDirection: 'parentToChild'`). This is the most common way to build taxonomies. If your graph has edges in the opposite direction (child to parent), pass `{ edgeDirection: 'childToParent' }` as an option to any measure function.
 
 ## Semantic Measures
 
@@ -302,6 +305,7 @@ $$m(c_1,c_2) = IC(c_1) + IC(c_2) - 2 \cdot \mathrm{resnik_{IC}}(c_1,c_2)$$
 
 All measures accept an optional `ExtraOptions` object:
 
+- `edgeDirection?: 'parentToChild' | 'childToParent'` - Direction of edges in the taxonomy. Default: `'parentToChild'`.
 - `predicates?: string | string[]` - Filter edges by predicate(s)
 - `maxDepth?: number` - Maximum depth of the taxonomy (required for Resnik Edge and Leacock-Chodorow)
 - `ic?: Map<string, number>` - Information content values for nodes (required for Resnik IC, Lin, and Jiang-Conrath)

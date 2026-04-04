@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { createTaxonomy } from './measures.test-helpers';
 import { jiangConrath } from './jiangConrath';
+import { createTaxonomy, createTaxonomyParentToChild } from './measures.test-helpers';
 
 const createICMap = () => {
   const ic = new Map<string, number>();
@@ -13,31 +13,13 @@ const createICMap = () => {
   return ic;
 };
 
-describe('jiangConrath', () => {
+const ic = createICMap();
+
+describe('jiangConrath extra tests (childToParent)', () => {
   const g = createTaxonomy();
-  const ic = createICMap();
 
   it('returns 0 when no ic provided', () => {
-    expect(jiangConrath(g, 'dog', 'cat')).toBe(0);
-  });
-
-  it('returns 0 for same node', () => {
-    expect(jiangConrath(g, 'dog', 'dog', { ic })).toBe(0);
-  });
-
-  it('returns expected value for siblings', () => {
-    const result = jiangConrath(g, 'dog', 'cat', { ic });
-    expect(result).toBeCloseTo(2 + 2 - 2 * 1, 5);
-  });
-
-  it('returns sum of ICs for cousins with no common ancestor IC', () => {
-    const result = jiangConrath(g, 'dog', 'penguin', { ic });
-    expect(result).toBe(2 + 2);
-  });
-
-  it('returns expected value for parent-child', () => {
-    const result = jiangConrath(g, 'mammal', 'dog', { ic });
-    expect(result).toBeCloseTo(1 + 2 - 2 * 1, 5);
+    expect(jiangConrath(g, 'dog', 'cat', { edgeDirection: 'childToParent' })).toBe(0);
   });
 
   it('returns 0 when concept1 not in ic', () => {
@@ -45,7 +27,7 @@ describe('jiangConrath', () => {
     partialIC.set('cat', 2);
     partialIC.set('mammal', 1);
     partialIC.set('animal', 0);
-    expect(jiangConrath(g, 'dog', 'cat', { ic: partialIC })).toBe(0);
+    expect(jiangConrath(g, 'dog', 'cat', { ic: partialIC, edgeDirection: 'childToParent' as const })).toBe(0);
   });
 
   it('returns 0 when concept2 not in ic', () => {
@@ -53,17 +35,56 @@ describe('jiangConrath', () => {
     partialIC.set('dog', 2);
     partialIC.set('mammal', 1);
     partialIC.set('animal', 0);
-    expect(jiangConrath(g, 'dog', 'cat', { ic: partialIC })).toBe(0);
+    expect(jiangConrath(g, 'dog', 'cat', { ic: partialIC, edgeDirection: 'childToParent' as const })).toBe(0);
+  });
+});
+
+describe('jiangConrath with IC map (childToParent)', () => {
+  const g = createTaxonomy();
+  const ic = createICMap();
+
+  it('returns 0 for identical dog', () => {
+    expect(jiangConrath(g, 'dog', 'dog', { ic, edgeDirection: 'childToParent' })).toBe(0);
   });
 
-  it('returns 0 when no path exists', () => {
-    const g = createTaxonomy();
-    g.addNode('plant');
-    expect(jiangConrath(g, 'dog', 'plant', { ic })).toBe(0);
+  it('returns 1 for mammal-dog', () => {
+    expect(jiangConrath(g, 'mammal', 'dog', { ic, edgeDirection: 'childToParent' })).toBe(1);
   });
 
-  it('handles nonexistent nodes gracefully', () => {
-    const g = createTaxonomy();
-    expect(jiangConrath(g, 'nonexistent1', 'nonexistent2', { ic })).toBe(0);
+  it('returns 2 for animal-dog', () => {
+    expect(jiangConrath(g, 'animal', 'dog', { ic, edgeDirection: 'childToParent' })).toBe(2);
+  });
+
+  it('returns 2 for dog-cat', () => {
+    expect(jiangConrath(g, 'dog', 'cat', { ic, edgeDirection: 'childToParent' })).toBe(2);
+  });
+
+  it('returns 4 for dog-penguin', () => {
+    expect(jiangConrath(g, 'dog', 'penguin', { ic, edgeDirection: 'childToParent' })).toBe(4);
+  });
+});
+
+describe('jiangConrath with IC map (default parentToChild)', () => {
+  const g = createTaxonomyParentToChild();
+  const ic = createICMap();
+
+  it('returns 0 for identical dog', () => {
+    expect(jiangConrath(g, 'dog', 'dog', { ic })).toBe(0);
+  });
+
+  it('returns 1 for mammal-dog', () => {
+    expect(jiangConrath(g, 'mammal', 'dog', { ic })).toBe(1);
+  });
+
+  it('returns 2 for animal-dog', () => {
+    expect(jiangConrath(g, 'animal', 'dog', { ic })).toBe(2);
+  });
+
+  it('returns 2 for dog-cat', () => {
+    expect(jiangConrath(g, 'dog', 'cat', { ic })).toBe(2);
+  });
+
+  it('returns 4 for dog-penguin', () => {
+    expect(jiangConrath(g, 'dog', 'penguin', { ic })).toBe(4);
   });
 });

@@ -1,7 +1,8 @@
-import type { MeasureFunction } from '../types';
+import type { EdgeDirection, ExtraOptions, MeasureFunction } from '../types';
 import { getAncestorSet } from '../helpers';
 
 export const sanchez: MeasureFunction = (graph, concept1, concept2, options = {}) => {
+  const edgeDirection: EdgeDirection = options.edgeDirection ?? 'parentToChild';
   const { TFSanchez, predicates } = options as { TFSanchez?: Map<string, Set<string>>; predicates?: string | string[] };
 
   let set_c1: Set<string>;
@@ -11,8 +12,8 @@ export const sanchez: MeasureFunction = (graph, concept1, concept2, options = {}
     set_c1 = TFSanchez.get(concept1)!;
     set_c2 = TFSanchez.get(concept2)!;
   } else {
-    set_c1 = getAncestorSet(graph, concept1, predicates);
-    set_c2 = getAncestorSet(graph, concept2, predicates);
+    set_c1 = getAncestorSet(graph, concept1, predicates, edgeDirection);
+    set_c2 = getAncestorSet(graph, concept2, predicates, edgeDirection);
   }
 
   if (set_c1.size === 0 || set_c2.size === 0) {

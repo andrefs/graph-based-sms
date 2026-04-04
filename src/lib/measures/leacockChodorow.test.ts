@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { leacockChodorow } from './leacockChodorow';
-import { runMeasureTests, MAX_DEPTH, createTaxonomy } from './measures.test-helpers';
+import { runMeasureTests, runMeasureTestsDefault, MAX_DEPTH, createTaxonomyParentToChild } from './measures.test-helpers';
 
 runMeasureTests('leacockChodorow', leacockChodorow, { maxDepth: MAX_DEPTH });
+runMeasureTestsDefault('leacockChodorow', leacockChodorow, { maxDepth: MAX_DEPTH });
 
-describe('leacockChodorow', () => {
+describe('leacockChodorow extra', () => {
   it('returns 0 without maxDepth', () => {
-    const g = createTaxonomy();
+    const g = createTaxonomyParentToChild();
     expect(leacockChodorow(g, 'dog', 'cat')).toBe(0);
   });
 });
