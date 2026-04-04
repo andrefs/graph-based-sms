@@ -1,9 +1,10 @@
-import type { ExtraOptions } from './types';
+import type { EdgeDirection, ExtraOptions } from './types';
 import { MultiDirectedGraph } from 'graphology';
+import { Attributes } from 'graphology-types';
 
-export type { ExtraOptions };
+export type { EdgeDirection, ExtraOptions };
 
-function getEdgeAttributes(graph: MultiDirectedGraph, source: string, target: string): unknown | null {
+function getEdgeAttributes(graph: MultiDirectedGraph, source: string, target: string): Attributes | null {
   const edges = graph.edges(source, target);
   if (edges.length === 0) return null;
   return graph.getEdgeAttributes(edges[0]);
@@ -85,7 +86,12 @@ export function getShortestPathLength(
   return path ? path.length - 1 : null;
 }
 
-export function getDepth(graph: MultiDirectedGraph, node: string, predicates?: string | string[]): number {
+export function getDepth(
+  graph: MultiDirectedGraph,
+  node: string,
+  predicates?: string | string[],
+  edgeDirection: EdgeDirection = 'parentToChild'
+): number {
   if (!graph.hasNode(node)) {
     return 0;
   }
@@ -94,11 +100,16 @@ export function getDepth(graph: MultiDirectedGraph, node: string, predicates?: s
     ? Array.isArray(predicates) ? predicates : [predicates]
     : null;
 
-  const filter = predArray ? (edge: unknown) => {
-    const edgePred = (edge as { predicate?: string }).predicate;
+  const filter = predArray ? (edge: Attributes) => {
+    const edgePred = edge.predicate;
     if (!edgePred) return false;
     return predArray.includes(edgePred);
   } : undefined;
+
+  const getUpNeighbors = (n: string) =>
+    edgeDirection === 'parentToChild'
+      ? graph.inboundNeighbors(n)
+      : graph.outboundNeighbors(n);
 
   let maxDepth = 0;
   const visited = new Set<string>();
@@ -109,7 +120,7 @@ export function getDepth(graph: MultiDirectedGraph, node: string, predicates?: s
     const [current, depth] = queue.shift()!;
     maxDepth = Math.max(maxDepth, depth);
 
-    for (const neighbor of graph.outboundNeighbors(current)) {
+    for (const neighbor of getUpNeighbors(current)) {
       if (!visited.has(neighbor)) {
         const edge = getEdgeAttributes(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
@@ -126,7 +137,8 @@ export function findLCAs(
   graph: MultiDirectedGraph,
   node1: string,
   node2: string,
-  predicates?: string | string[]
+  predicates?: string | string[],
+  edgeDirection: EdgeDirection = 'parentToChild'
 ): string[] {
   if (!graph.hasNode(node1) || !graph.hasNode(node2)) {
     return [];
@@ -136,11 +148,16 @@ export function findLCAs(
     ? Array.isArray(predicates) ? predicates : [predicates]
     : null;
 
-  const filter = predArray ? (edge: unknown) => {
-    const edgePred = (edge as { predicate?: string }).predicate;
+  const filter = predArray ? (edge: Attributes) => {
+    const edgePred = edge.predicate;
     if (!edgePred) return false;
     return predArray.includes(edgePred);
   } : undefined;
+
+  const getUpNeighbors = (n: string) =>
+    edgeDirection === 'parentToChild'
+      ? graph.inboundNeighbors(n)
+      : graph.outboundNeighbors(n);
 
   // Get ancestors of node1
   const ancestors1 = new Set<string>();
@@ -148,7 +165,7 @@ export function findLCAs(
   while (queue1.length > 0) {
     const current = queue1.shift()!;
     ancestors1.add(current);
-    for (const neighbor of graph.outboundNeighbors(current)) {
+    for (const neighbor of getUpNeighbors(current)) {
       if (!ancestors1.has(neighbor)) {
         const edge = getEdgeAttributes(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
@@ -168,7 +185,7 @@ export function findLCAs(
     if (ancestors1.has(current)) {
       lcas.add(current);
     }
-    for (const neighbor of graph.outboundNeighbors(current)) {
+    for (const neighbor of getUpNeighbors(current)) {
       if (!visited2.has(neighbor)) {
         const edge = getEdgeAttributes(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;
@@ -181,21 +198,71 @@ export function findLCAs(
   return Array.from(lcas);
 }
 
+export function getAncestorSet(
+  graph: MultiDirectedGraph,
+  node: string,
+  predicates?: string | string[],
+  edgeDirection: EdgeDirection = 'parentToChild'
+): Set<string> {
+  if (!graph.hasNode(node)) {
+    return new Set<string>();
+  }
+
+  const predArray = predicates
+    ? Array.isArray(predicates) ? predicates : [predicates]
+    : null;
+
+  const filter = predArray ? (edge: Attributes) => {
+    const edgePred = edge.predicate;
+    if (!edgePred) return false;
+    return predArray.includes(edgePred);
+  } : undefined;
+
+  const getUpNeighbors = (n: string) =>
+    edgeDirection === 'parentToChild'
+      ? graph.inboundNeighbors(n)
+      : graph.outboundNeighbors(n);
+
+  const ancestors = new Set<string>();
+  const queue: string[] = [node];
+
+  while (queue.length > 0) {
+    const current = queue.shift()!;
+    ancestors.add(current);
+
+    for (const neighbor of getUpNeighbors(current)) {
+      if (!ancestors.has(neighbor)) {
+        const edge = getEdgeAttributes(graph, current, neighbor);
+        if (!edge || (filter && !filter(edge))) continue;
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  return ancestors;
+}
+
 export function getPathLengthToAncestor(
   graph: MultiDirectedGraph,
   node: string,
   ancestor: string,
-  predicates?: string | string[]
+  predicates?: string | string[],
+  edgeDirection: EdgeDirection = 'parentToChild'
 ): number | null {
   const predArray = predicates
     ? Array.isArray(predicates) ? predicates : [predicates]
     : null;
 
-  const filter = predArray ? (edge: unknown) => {
-    const edgePred = (edge as { predicate?: string }).predicate;
+  const filter = predArray ? (edge: Attributes) => {
+    const edgePred = edge.predicate;
     if (!edgePred) return false;
     return predArray.includes(edgePred);
   } : undefined;
+
+  const getUpNeighbors = (n: string) =>
+    edgeDirection === 'parentToChild'
+      ? graph.inboundNeighbors(n)
+      : graph.outboundNeighbors(n);
 
   const visited = new Set<string>();
   const queue: [string, number][] = [[node, 0]];
@@ -207,7 +274,7 @@ export function getPathLengthToAncestor(
       return dist;
     }
 
-    for (const neighbor of graph.outboundNeighbors(current)) {
+    for (const neighbor of getUpNeighbors(current)) {
       if (!visited.has(neighbor)) {
         const edge = getEdgeAttributes(graph, current, neighbor);
         if (!edge || (filter && !filter(edge))) continue;

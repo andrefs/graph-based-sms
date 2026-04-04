@@ -1,7 +1,7 @@
 import type { EdgeDirection, MeasureFunction } from '../types';
 import { getDepth, findLCAs, getPathLengthToAncestor } from '../helpers';
 
-export const wuPalmer: MeasureFunction = (graph, concept1, concept2, options = {}) => {
+export const pekarStaab: MeasureFunction = (graph, concept1, concept2, options = {}) => {
   const edgeDirection: EdgeDirection = options.edgeDirection ?? 'parentToChild';
   const lcas = findLCAs(graph, concept1, concept2, options.predicates, edgeDirection);
 
@@ -16,14 +16,9 @@ export const wuPalmer: MeasureFunction = (graph, concept1, concept2, options = {
     const path1 = getPathLengthToAncestor(graph, concept1, lca, options.predicates, edgeDirection);
     const path2 = getPathLengthToAncestor(graph, concept2, lca, options.predicates, edgeDirection);
 
-    if (path1 !== null && path2 !== null) {
-      const denominator = 2 * depthLCA + path1 + path2;
-      if (denominator === 0) {
-        bestScore = 1; // Same node at root
-      } else {
-        const score = (2 * depthLCA) / denominator;
-        bestScore = Math.max(bestScore, score);
-      }
+    if (depthLCA > 0 && path1 !== null && path2 !== null) {
+      const score = depthLCA / (path1 + path2 + depthLCA);
+      bestScore = Math.max(bestScore, score);
     }
   }
 
