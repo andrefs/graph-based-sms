@@ -4,21 +4,42 @@ import { Attributes } from 'graphology-types';
 
 export type { EdgeDirection, ExtraOptions };
 
-function getEdgeAttributes(graph: MultiDirectedGraph, source: string, target: string): Attributes | null {
-  const edges = graph.edges(source, target);
-  if (edges.length === 0) return null;
-  return graph.getEdgeAttributes(edges[0]);
-}
-
 /**
- * Get edge attributes in either direction.
- * Tries (source, target) first, then (target, source) if not found.
- * This is needed because depending on edgeDirection, the edge may be stored in the opposite orientation.
+ * Find an edge between source and target (in either direction) that matches the given predicates.
+ * Returns the edge attributes of the first matching edge, or null if none found.
  */
-function getEdgeAttributesBothWays(graph: MultiDirectedGraph, source: string, target: string): Attributes | null {
-  return getEdgeAttributes(graph, source, target) || getEdgeAttributes(graph, target, source);
-}
+function findEdgeWithPredicate(
+  graph: MultiDirectedGraph,
+  source: string,
+  target: string,
+  predicates?: string | string[]
+): Attributes | null {
+  const edges1 = graph.edges(source, target);
+  const edges2 = graph.edges(target, source);
+  const allEdges = [...edges1, ...edges2];
 
+  if (allEdges.length === 0) return null;
+
+  const predArray = predicates
+    ? Array.isArray(predicates) ? predicates : [predicates]
+    : null;
+
+  for (const edgeKey of allEdges) {
+    const attrs = graph.getEdgeAttributes(edgeKey);
+    if (!attrs) continue;
+    if (predArray) {
+      const edgePred = attrs.predicate;
+      if (!edgePred) continue;
+      if (predArray.includes(edgePred)) {
+        return attrs;
+      }
+    } else {
+      return attrs;
+    }
+  }
+
+  return null;
+}
 
 /**
  * BFS-based shortest path with edge filtering
@@ -33,17 +54,6 @@ export function bfsShortestPath(
     return null;
   }
 
-  const predArray = predicates
-    ? Array.isArray(predicates) ? predicates : [predicates]
-    : null;
-
-  const filter = predArray ? (edge: unknown) => {
-    const edgePred = (edge as { predicate?: string }).predicate;
-    if (!edgePred) return false;
-    return predArray.includes(edgePred);
-  } : undefined;
-
-  // BFS
   const visited = new Set<string>();
   const queue: string[] = [source];
   const parent = new Map<string, string>();
@@ -72,8 +82,8 @@ export function bfsShortestPath(
     for (const neighbor of neighbors) {
       if (!visited.has(neighbor)) {
         // Check edge passes filter
-        const edge = getEdgeAttributes(graph, current, neighbor) || getEdgeAttributes(graph, neighbor, current);
-        if (!edge || (filter && !filter(edge))) continue;
+        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
+        if (!edge) continue;
 
         visited.add(neighbor);
         parent.set(neighbor, current);
@@ -105,16 +115,6 @@ export function getDepth(
     return 0;
   }
 
-  const predArray = predicates
-    ? Array.isArray(predicates) ? predicates : [predicates]
-    : null;
-
-  const filter = predArray ? (edge: Attributes) => {
-    const edgePred = edge.predicate;
-    if (!edgePred) return false;
-    return predArray.includes(edgePred);
-  } : undefined;
-
   const getUpNeighbors = (n: string) =>
     edgeDirection === 'parentToChild'
       ? graph.inboundNeighbors(n)
@@ -131,9 +131,8 @@ export function getDepth(
 
     for (const neighbor of getUpNeighbors(current)) {
       if (!visited.has(neighbor)) {
-        // Edge may be stored in either direction
-        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
-        if (!edge || (filter && !filter(edge))) continue;
+        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
+        if (!edge) continue;
         visited.add(neighbor);
         queue.push([neighbor, depth + 1]);
       }
@@ -154,16 +153,6 @@ export function findLCAs(
     return [];
   }
 
-  const predArray = predicates
-    ? Array.isArray(predicates) ? predicates : [predicates]
-    : null;
-
-  const filter = predArray ? (edge: Attributes) => {
-    const edgePred = edge.predicate;
-    if (!edgePred) return false;
-    return predArray.includes(edgePred);
-  } : undefined;
-
   const getUpNeighbors = (n: string) =>
     edgeDirection === 'parentToChild'
       ? graph.inboundNeighbors(n)
@@ -177,8 +166,8 @@ export function findLCAs(
     ancestors1.add(current);
     for (const neighbor of getUpNeighbors(current)) {
       if (!ancestors1.has(neighbor)) {
-        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
-        if (!edge || (filter && !filter(edge))) continue;
+        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
+        if (!edge) continue;
         queue1.push(neighbor);
       }
     }
@@ -197,8 +186,8 @@ export function findLCAs(
     }
     for (const neighbor of getUpNeighbors(current)) {
       if (!visited2.has(neighbor)) {
-        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
-        if (!edge || (filter && !filter(edge))) continue;
+        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
+        if (!edge) continue;
         visited2.add(neighbor);
         queue2.push(neighbor);
       }
@@ -218,16 +207,6 @@ export function getAncestorSet(
     return new Set<string>();
   }
 
-  const predArray = predicates
-    ? Array.isArray(predicates) ? predicates : [predicates]
-    : null;
-
-  const filter = predArray ? (edge: Attributes) => {
-    const edgePred = edge.predicate;
-    if (!edgePred) return false;
-    return predArray.includes(edgePred);
-  } : undefined;
-
   const getUpNeighbors = (n: string) =>
     edgeDirection === 'parentToChild'
       ? graph.inboundNeighbors(n)
@@ -242,8 +221,8 @@ export function getAncestorSet(
 
     for (const neighbor of getUpNeighbors(current)) {
       if (!ancestors.has(neighbor)) {
-        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
-        if (!edge || (filter && !filter(edge))) continue;
+        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
+        if (!edge) continue;
         queue.push(neighbor);
       }
     }
@@ -259,16 +238,6 @@ export function getPathLengthToAncestor(
   predicates?: string | string[],
   edgeDirection: EdgeDirection = 'parentToChild'
 ): number | null {
-  const predArray = predicates
-    ? Array.isArray(predicates) ? predicates : [predicates]
-    : null;
-
-  const filter = predArray ? (edge: Attributes) => {
-    const edgePred = edge.predicate;
-    if (!edgePred) return false;
-    return predArray.includes(edgePred);
-  } : undefined;
-
   const getUpNeighbors = (n: string) =>
     edgeDirection === 'parentToChild'
       ? graph.inboundNeighbors(n)
@@ -286,8 +255,8 @@ export function getPathLengthToAncestor(
 
     for (const neighbor of getUpNeighbors(current)) {
       if (!visited.has(neighbor)) {
-        let edge = getEdgeAttributesBothWays(graph, current, neighbor);
-        if (!edge || (filter && !filter(edge))) continue;
+        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
+        if (!edge) continue;
         visited.add(neighbor);
         queue.push([neighbor, dist + 1]);
       }

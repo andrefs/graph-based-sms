@@ -281,3 +281,80 @@ describe('findLCAs edge cases', () => {
     expect(lcas).toContain('root');
   });
 });
+
+describe('Multiple edges with different predicates', () => {
+  const createMultiEdgeTaxonomy = () => {
+    const g = new Graph();
+    ['a', 'b', 'c'].forEach(n => g.addNode(n));
+    // Multiple edges from a to b with different predicates (a is parent of b)
+    g.addEdge('a', 'b', { predicate: 'is-a' });
+    g.addEdge('a', 'b', { predicate: 'part-of' });
+    // b to c edge (b is parent of c)
+    g.addEdge('b', 'c', { predicate: 'is-a' });
+    return g;
+  };
+
+  it('getDepth filters by predicate correctly', () => {
+    const g = createMultiEdgeTaxonomy();
+    // With 'is-a' predicate: depth should be 2 (c->b->a via is-a edges)
+    expect(getDepth(g, 'c', 'is-a', 'parentToChild')).toBe(2);
+    // With 'part-of' only: c->b edge is 'is-a', doesn't match 'part-of', so c cannot reach a. Depth is 0 (only self)
+    expect(getDepth(g, 'c', 'part-of', 'parentToChild')).toBe(0);
+  });
+
+  it('findLCAs uses correct edge based on predicate', () => {
+    const g = createMultiEdgeTaxonomy();
+    // For a and c, LCA should be a itself when using is-a (path c->b->a via is-a)
+    expect(findLCAs(g, 'a', 'c', 'is-a', 'parentToChild')).toContain('a');
+    // With part-of only: no valid path from c to a, so no LCA besides potentially self but they are different nodes
+    expect(findLCAs(g, 'a', 'c', 'part-of', 'parentToChild')).toEqual([]);
+  });
+
+  it('getAncestorSet respects predicate', () => {
+    const g = createMultiEdgeTaxonomy();
+    const ancestorsC_isA = getAncestorSet(g, 'c', 'is-a', 'parentToChild');
+    expect(ancestorsC_isA).toContain('b');
+    expect(ancestorsC_isA).toContain('a');
+
+    const ancestorsC_partOf = getAncestorSet(g, 'c', 'part-of', 'parentToChild');
+    expect(ancestorsC_partOf).not.toContain('b');
+    expect(ancestorsC_partOf).not.toContain('a');
+    expect(ancestorsC_partOf.has('c')).toBe(true);
+  });
+
+  it('getPathLengthToAncestor picks edge with matching predicate', () => {
+    const g = createMultiEdgeTaxonomy();
+    expect(getPathLengthToAncestor(g, 'c', 'a', 'is-a', 'parentToChild')).toBe(2);
+    expect(getPathLengthToAncestor(g, 'c', 'a', 'part-of', 'parentToChild')).toBeNull();
+  });
+
+  it('bfsShortestPath respects predicate filter', () => {
+    const g = createMultiEdgeTaxonomy();
+    const path = bfsShortestPath(g, 'c', 'a', 'is-a');
+    expect(path).toEqual(['c', 'b', 'a']);
+
+    const noPath = bfsShortestPath(g, 'c', 'a', 'part-of');
+    expect(noPath).toBeNull();
+  });
+
+  it('selects edge from opposite direction when needed', () => {
+    // Test where matching edge exists only in reverse direction (relative to traversal)
+    const g = new Graph();
+    ['x', 'y'].forEach(n => g.addNode(n));
+    g.addEdge('x', 'y', { predicate: 'is-a' }); // x -> y
+    // Traversing from y to x: in parentToChild mode, y's inbound neighbors include x because edge is x->y.
+    // The edge between x and y exists in x->y direction, but we're checking from y (current) to x (neighbor).
+    // findEdgeWithPredicate should find it by checking both directions.
+    expect(findLCAs(g, 'x', 'y', 'is-a', 'parentToChild')).toContain('x');
+  });
+
+  it('handles multiple edges with same predicate', () => {
+    const g = new Graph();
+    ['p', 'q'].forEach(n => g.addNode(n));
+    // In parentToChild, edges point parent->child. To have q be a child of p, add edge p->q.
+    g.addEdge('p', 'q', { predicate: 'is-a' });
+    g.addEdge('p', 'q', { predicate: 'is-a' }); // duplicate with same predicate
+    // Depth of q should be 1 (one parent)
+    expect(getDepth(g, 'q', 'is-a', 'parentToChild')).toBe(1);
+  });
+});
