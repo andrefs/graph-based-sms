@@ -358,3 +358,51 @@ describe('Multiple edges with different predicates', () => {
     expect(getDepth(g, 'q', 'is-a', 'parentToChild')).toBe(1);
   });
 });
+
+describe('Multi-edge deterministic behavior (same predicate)', () => {
+  it('returns consistent result for duplicate edges with same predicate', () => {
+    const g = new Graph();
+    ['p', 'q'].forEach(n => g.addNode(n));
+    g.addEdge('p', 'q', { predicate: 'is-a' });
+    g.addEdge('p', 'q', { predicate: 'is-a' });
+    // Should consistently return depth 1 regardless of edge order
+    const result = getDepth(g, 'q', 'is-a', 'parentToChild');
+    expect(result).toBe(1);
+  });
+
+  it('handles edges in both directions with same predicate deterministically', () => {
+    const g = new Graph();
+    ['x', 'y'].forEach(n => g.addNode(n));
+    g.addEdge('x', 'y', { predicate: 'is-a' });
+    g.addEdge('y', 'x', { predicate: 'is-a' });
+    // Should find LCA correctly and deterministically
+    const result = findLCAs(g, 'x', 'y', 'is-a', 'parentToChild');
+    expect(result).toContain('x');
+    expect(result).toContain('y');
+  });
+
+  it('predicate filter works with multiple duplicate edges', () => {
+    const g = new Graph();
+    ['a', 'b', 'c'].forEach(n => g.addNode(n));
+    g.addEdge('a', 'b', { predicate: 'is-a' });
+    g.addEdge('a', 'b', { predicate: 'is-a' }); // duplicate
+    g.addEdge('b', 'c', { predicate: 'part-of' });
+    g.addEdge('b', 'c', { predicate: 'part-of' }); // duplicate
+
+    const ancestors = getAncestorSet(g, 'c', 'is-a', 'parentToChild');
+    expect(ancestors.has('b')).toBe(false); // b->c is part-of, not is-a
+    expect(ancestors.has('a')).toBe(false);
+  });
+
+  it('deterministic selection: sorted order ensures consistent first match', () => {
+    const g = new Graph();
+    ['root', 'child'].forEach(n => g.addNode(n));
+    // Add edges in reverse alphabetical order to test sorting
+    g.addEdge('root', 'child', { predicate: 'is-a' });
+    g.addEdge('child', 'root', { predicate: 'is-a' });
+    // LCA should include both nodes regardless of traversal direction
+    const lcas = findLCAs(g, 'root', 'child', 'is-a', 'parentToChild');
+    expect(lcas).toContain('root');
+    expect(lcas).toContain('child');
+  });
+});

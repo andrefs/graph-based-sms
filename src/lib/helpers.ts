@@ -16,7 +16,7 @@ function findEdgeWithPredicate(
 ): Attributes | null {
   const edges1 = graph.edges(source, target);
   const edges2 = graph.edges(target, source);
-  const allEdges = [...edges1, ...edges2];
+  const allEdges = [...edges1, ...edges2].sort();
 
   if (allEdges.length === 0) return null;
 
