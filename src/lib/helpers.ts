@@ -5,18 +5,22 @@ import { Attributes } from 'graphology-types';
 export type { EdgeDirection, ExtraOptions };
 
 /**
- * Find an edge between source and target (in either direction) that matches the given predicates.
- * Returns the edge attributes of the first matching edge, or null if none found.
+ * Find an edge between source and target with optional predicate and direction filtering.
+ * Direction controls which edge directions are considered:
+ * - 'forward': only edges from source to target
+ * - 'reverse': only edges from target to source
+ * - 'both': both directions (default)
+ * Returns the edge attributes of the first matching edge (sorted deterministically), or null.
  */
 function findEdgeWithPredicate(
   graph: MultiDirectedGraph,
   source: string,
   target: string,
-  predicates?: string | string[]
+  predicates?: string | string[],
+  direction: 'forward' | 'reverse' | 'both' = 'both'
 ): Attributes | null {
-  const edges1 = graph.edges(source, target);
-  const edges2 = graph.edges(target, source);
-  const allEdges = [...edges1, ...edges2].sort();
+  // Get all edges between the nodes (both directions)
+  const allEdges = graph.edges(source, target).sort();
 
   if (allEdges.length === 0) return null;
 
@@ -25,6 +29,14 @@ function findEdgeWithPredicate(
     : null;
 
   for (const edgeKey of allEdges) {
+    // Filter by direction if needed
+    if (direction !== 'both') {
+      const src = graph.source(edgeKey);
+      const tgt = graph.target(edgeKey);
+      if (direction === 'forward' && !(src === source && tgt === target)) continue;
+      if (direction === 'reverse' && !(src === target && tgt === source)) continue;
+    }
+
     const attrs = graph.getEdgeAttributes(edgeKey);
     if (!attrs) continue;
     if (predArray) {
@@ -129,14 +141,16 @@ export function getDepth(
     const [current, depth] = queue.shift()!;
     maxDepth = Math.max(maxDepth, depth);
 
-    for (const neighbor of getUpNeighbors(current)) {
-      if (!visited.has(neighbor)) {
-        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
-        if (!edge) continue;
-        visited.add(neighbor);
-        queue.push([neighbor, depth + 1]);
-      }
-    }
+     for (const neighbor of getUpNeighbors(current)) {
+       if (!visited.has(neighbor)) {
+         const direction: 'forward' | 'reverse' =
+           edgeDirection === 'parentToChild' ? 'reverse' : 'forward';
+         const edge = findEdgeWithPredicate(graph, current, neighbor, predicates, direction);
+         if (!edge) continue;
+         visited.add(neighbor);
+         queue.push([neighbor, depth + 1]);
+       }
+     }
   }
 
   return maxDepth;
@@ -164,13 +178,15 @@ export function findLCAs(
   while (queue1.length > 0) {
     const current = queue1.shift()!;
     ancestors1.add(current);
-    for (const neighbor of getUpNeighbors(current)) {
-      if (!ancestors1.has(neighbor)) {
-        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
-        if (!edge) continue;
-        queue1.push(neighbor);
-      }
-    }
+     for (const neighbor of getUpNeighbors(current)) {
+       if (!ancestors1.has(neighbor)) {
+         const direction: 'forward' | 'reverse' =
+           edgeDirection === 'parentToChild' ? 'reverse' : 'forward';
+         const edge = findEdgeWithPredicate(graph, current, neighbor, predicates, direction);
+         if (!edge) continue;
+         queue1.push(neighbor);
+       }
+     }
   }
 
   // Find ancestors of node2 that are also ancestors of node1
@@ -184,14 +200,16 @@ export function findLCAs(
     if (ancestors1.has(current)) {
       lcas.add(current);
     }
-    for (const neighbor of getUpNeighbors(current)) {
-      if (!visited2.has(neighbor)) {
-        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
-        if (!edge) continue;
-        visited2.add(neighbor);
-        queue2.push(neighbor);
-      }
-    }
+     for (const neighbor of getUpNeighbors(current)) {
+       if (!visited2.has(neighbor)) {
+         const direction: 'forward' | 'reverse' =
+           edgeDirection === 'parentToChild' ? 'reverse' : 'forward';
+         const edge = findEdgeWithPredicate(graph, current, neighbor, predicates, direction);
+         if (!edge) continue;
+         visited2.add(neighbor);
+         queue2.push(neighbor);
+       }
+     }
   }
 
   return Array.from(lcas);
@@ -219,13 +237,15 @@ export function getAncestorSet(
     const current = queue.shift()!;
     ancestors.add(current);
 
-    for (const neighbor of getUpNeighbors(current)) {
-      if (!ancestors.has(neighbor)) {
-        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
-        if (!edge) continue;
-        queue.push(neighbor);
-      }
-    }
+     for (const neighbor of getUpNeighbors(current)) {
+       if (!ancestors.has(neighbor)) {
+         const direction: 'forward' | 'reverse' =
+           edgeDirection === 'parentToChild' ? 'reverse' : 'forward';
+         const edge = findEdgeWithPredicate(graph, current, neighbor, predicates, direction);
+         if (!edge) continue;
+         queue.push(neighbor);
+       }
+     }
   }
 
   return ancestors;
@@ -253,14 +273,16 @@ export function getPathLengthToAncestor(
       return dist;
     }
 
-    for (const neighbor of getUpNeighbors(current)) {
-      if (!visited.has(neighbor)) {
-        const edge = findEdgeWithPredicate(graph, current, neighbor, predicates);
-        if (!edge) continue;
-        visited.add(neighbor);
-        queue.push([neighbor, dist + 1]);
-      }
-    }
+     for (const neighbor of getUpNeighbors(current)) {
+       if (!visited.has(neighbor)) {
+         const direction: 'forward' | 'reverse' =
+           edgeDirection === 'parentToChild' ? 'reverse' : 'forward';
+         const edge = findEdgeWithPredicate(graph, current, neighbor, predicates, direction);
+         if (!edge) continue;
+         visited.add(neighbor);
+         queue.push([neighbor, dist + 1]);
+       }
+     }
   }
 
   return null;

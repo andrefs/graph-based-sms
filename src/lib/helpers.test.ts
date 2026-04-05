@@ -406,3 +406,57 @@ describe('Multi-edge deterministic behavior (same predicate)', () => {
     expect(lcas).toContain('child');
   });
 });
+
+describe('Bidirectional edge direction bug', () => {
+  it('getDepth does not follow reverse-direction edge with different predicate', () => {
+    // Bug: When both directions exist with different predicates,
+    // the traversal should only consider the edge in the traversal direction.
+    const g = new Graph();
+    ['A', 'B'].forEach(n => g.addNode(n));
+    // A→B with 'is-a' (A is parent of B via is-a)
+    g.addEdge('A', 'B', { predicate: 'is-a' });
+    // B→A with 'part-of' (B part-of A)
+    g.addEdge('B', 'A', { predicate: 'part-of' });
+
+    // B's inbound neighbors: {A} (due to A→B)
+    // For 'part-of' predicate, we should NOT traverse B→A because that edge
+    // goes opposite to the inbound direction (it's B→A, not A→B).
+    // Expected: B has no part-of ancestors, depth = 0.
+    expect(getDepth(g, 'B', 'part-of', 'parentToChild')).toBe(0);
+  });
+
+  it('findLCAs respects edge direction with mixed predicates', () => {
+    const g = new Graph();
+    ['A', 'B'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'B', { predicate: 'is-a' });
+    g.addEdge('B', 'A', { predicate: 'part-of' });
+
+    // With 'part-of' predicate, B is an ancestor of A (via B->A), but A is not an ancestor of B.
+    // Therefore the only common ancestor is B itself.
+    const lcas = findLCAs(g, 'A', 'B', 'part-of', 'parentToChild');
+    expect(lcas).toContain('B');
+    // A should not be in LCA set.
+    expect(lcas).not.toContain('A');
+  });
+
+  it('getAncestorSet respects edge direction with mixed predicates', () => {
+    const g = new Graph();
+    ['A', 'B'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'B', { predicate: 'is-a' });
+    g.addEdge('B', 'A', { predicate: 'part-of' });
+
+    const ancestors = getAncestorSet(g, 'B', 'part-of', 'parentToChild');
+    // Should only include B; A is not a part-of ancestor
+    expect(ancestors).toEqual(new Set(['B']));
+  });
+
+  it('getPathLengthToAncestor ignores reverse-direction edge', () => {
+    const g = new Graph();
+    ['A', 'B'].forEach(n => g.addNode(n));
+    g.addEdge('A', 'B', { predicate: 'is-a' });
+    g.addEdge('B', 'A', { predicate: 'part-of' });
+
+    // No part-of path from B to A
+    expect(getPathLengthToAncestor(g, 'B', 'A', 'part-of', 'parentToChild')).toBeNull();
+  });
+});
