@@ -20,15 +20,24 @@ function findEdgeWithPredicate(
   direction: 'forward' | 'reverse' | 'both' = 'both'
 ): Attributes | null {
   // Get all edges between the nodes (both directions)
-  const allEdges = graph.edges(source, target).sort();
+  const allEdges = graph.edges(source, target);
 
   if (allEdges.length === 0) return null;
+
+  // Sort edges deterministically: first by predicate (if available), then by edge key
+  const sortedEdges = allEdges.sort((a, b) => {
+    const predA = graph.getEdgeAttributes(a)?.predicate ?? '';
+    const predB = graph.getEdgeAttributes(b)?.predicate ?? '';
+    const predCompare = predA.localeCompare(predB);
+    if (predCompare !== 0) return predCompare;
+    return a.localeCompare(b);
+  });
 
   const predArray = predicates
     ? Array.isArray(predicates) ? predicates : [predicates]
     : null;
 
-  for (const edgeKey of allEdges) {
+  for (const edgeKey of sortedEdges) {
     // Filter by direction if needed
     if (direction !== 'both') {
       const src = graph.source(edgeKey);

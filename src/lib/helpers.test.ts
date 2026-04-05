@@ -460,3 +460,86 @@ describe('Bidirectional edge direction bug', () => {
     expect(getPathLengthToAncestor(g, 'B', 'A', 'part-of', 'parentToChild')).toBeNull();
   });
 });
+
+describe('Predicate edge cases and array handling', () => {
+  it('handles predicates as array (multiple allowed predicates)', () => {
+    const g = new Graph();
+    ['a', 'b', 'c'].forEach(n => g.addNode(n));
+    g.addEdge('a', 'b', { predicate: 'is-a' });
+    g.addEdge('b', 'c', { predicate: 'part-of' });
+    g.addEdge('c', 'a', { predicate: 'related-to' });
+
+    // Should find path when one of the predicates matches
+    const path = bfsShortestPath(g, 'a', 'c', ['is-a', 'part-of']);
+    expect(path).toEqual(['a', 'b', 'c']);
+  });
+
+  it('filters out edges without predicate attribute', () => {
+    const g = new Graph();
+    ['x', 'y'].forEach(n => g.addNode(n));
+    g.addEdge('x', 'y', {}); // no predicate
+    g.addEdge('x', 'y', { predicate: 'is-a' });
+
+    const path = bfsShortestPath(g, 'x', 'y', 'is-a');
+    expect(path).toEqual(['x', 'y']);
+
+    // No predicate filter should match any edge (including those with no predicate)
+    const pathAny = bfsShortestPath(g, 'x', 'y');
+    expect(pathAny).toEqual(['x', 'y']);
+  });
+
+  it('returns null when no edges match the predicate filter', () => {
+    const g = new Graph();
+    ['p', 'q'].forEach(n => g.addNode(n));
+    g.addEdge('p', 'q', { predicate: 'is-a' });
+
+    const result = bfsShortestPath(g, 'p', 'q', 'part-of');
+    expect(result).toBeNull();
+  });
+
+  it('handles empty predicates array', () => {
+    const g = new Graph();
+    ['m', 'n'].forEach(n => g.addNode(n));
+    g.addEdge('m', 'n', { predicate: 'is-a' });
+
+    // Empty array means no predicates allowed; should not match any edge with a predicate
+    const result = bfsShortestPath(g, 'm', 'n', []);
+    expect(result).toBeNull();
+  });
+
+  it('getAncestorSet respects predicate priority with multiple edges', () => {
+    const g = new Graph();
+    ['root', 'child'].forEach(n => g.addNode(n));
+    g.addEdge('root', 'child', { predicate: 'part-of' });
+    g.addEdge('root', 'child', { predicate: 'is-a' });
+    g.addEdge('root', 'child', { predicate: 'related-to' });
+
+    // Without filter, should include child (predicate 'is-a' is first alphabetically)
+    const ancestorsAny = getAncestorSet(g, 'child', undefined, 'parentToChild');
+    expect(ancestorsAny.has('root')).toBe(true);
+
+    // With 'related-to' filter, should still work
+    const ancestorsRel = getAncestorSet(g, 'child', 'related-to', 'parentToChild');
+    expect(ancestorsRel.has('root')).toBe(true);
+  });
+
+  it('edges with no predicate are considered when no filter is applied', () => {
+    const g = new Graph();
+    ['a', 'b'].forEach(n => g.addNode(n));
+    g.addEdge('a', 'b', {}); // no predicate
+
+    const path = bfsShortestPath(g, 'a', 'b');
+    expect(path).toEqual(['a', 'b']);
+  });
+
+  it('predicate filter excludes edges without predicate', () => {
+    const g = new Graph();
+    ['x', 'y'].forEach(n => g.addNode(n));
+    g.addEdge('x', 'y', {}); // no predicate
+    g.addEdge('x', 'y', { predicate: 'is-a' });
+
+    // Only is-a should match
+    const path = bfsShortestPath(g, 'x', 'y', 'is-a');
+    expect(path).toEqual(['x', 'y']);
+  });
+});
