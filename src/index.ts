@@ -1,2 +1,6 @@
-export { type Graph, type ExtraOptions, type MeasureFunction } from './lib/types';
-export * from './lib/measures';
+export {
+  type Graph,
+  type ExtraOptions,
+  type MeasureFunction,
+} from "./lib/types";
+export * from "./lib/measures/index.js";
