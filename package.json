@@ -1,6 +1,6 @@
 {
   "name": "graph-based-sms",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Graph-based semantic similarity measures using graphology graphs",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -9,7 +9,8 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./lib/measures": "./dist/lib/measures/index.js"
   },
   "scripts": {
     "prepare": "npm run build",
