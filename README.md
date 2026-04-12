@@ -255,7 +255,6 @@ $$d(c_1,c_2) = log_2  \left(1+   \frac{|\phi(c_1) \backslash \phi(c_2)| +|\phi(c
 where:
 
 - $$\phi(a)$$ are the *taxonomical features* (i.e. the subsumers) of node $$a$$
-- 
 - $$\phi(a) \backslash \phi(b)$$ represents the subsumers of $$a$$ that are not subsumers of $$b$$
 
 **Source:** Equation (24), p. 7723 in Sánchez et al. (2012).
@@ -287,7 +286,7 @@ $$m(c_1,c_2) = \frac{2 \times \mathrm{resnik_{IC}}(c_1,c_2)}{(IC(c_1)+IC(c_2))}$
 
 where:
 
-- $$\mathrm{resnik_{IC}}(c_1,c_2)}$$ is the IC-based measure from Resnik
+- $$\mathrm{resnik_{IC}}(c_1,c_2)$$ is the IC-based measure from Resnik
 - $$IC(a)$$ is the information content value of node $$a$$
 
 **Source:** Unnumbered equation on the sixth page in Lin (1998). Also Equation (17), p. 7721 in Sánchez et al. (2012); Equation (3.29), p. 94 in Harispe et al. (2015).
