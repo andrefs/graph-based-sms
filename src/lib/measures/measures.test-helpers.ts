@@ -99,12 +99,12 @@ const legacyTestCases = [
   {
     name: 'same node',
     c1: 'dog', c2: 'dog',
-    expected: { shortestPath: 0, radaSimilarity: 1, resnikEdge: 6, wuPalmer: 1, pekarStaab: 1, simTBK: 1, zhong: 1 / Math.pow(2, 2), leacockChodorow: Math.log(6), hirstStOnge: 8 },
+    expected: { shortestPath: 0, radaSimilarity: 1, resnikEdge: 6, wuPalmer: 1, pekarStaab: 1, simTBK: 1, zhong: 0, leacockChodorow: Math.log(6), hirstStOnge: 8 },
   },
   {
     name: 'direct parent-child',
     c1: 'mammal', c2: 'dog',
-    expected: { shortestPath: 1, radaSimilarity: 0.5, resnikEdge: 5, wuPalmer: 2/3, pekarStaab: 0.5, simTBK: 2/3, zhong: 1 / Math.pow(2, 1) - 1 / (2 * Math.pow(2, 1)) - 1 / (2 * Math.pow(2, 2)), leacockChodorow: Math.log(6)-Math.log(2), hirstStOnge: 7 },
+    expected: { shortestPath: 1, radaSimilarity: 0.5, resnikEdge: 5, wuPalmer: 2/3, pekarStaab: 0.5, simTBK: 2/3, zhong: 0.125, leacockChodorow: Math.log(6)-Math.log(2), hirstStOnge: 7 },
   },
   {
     name: 'grandparent-grandchild',
@@ -114,7 +114,7 @@ const legacyTestCases = [
   {
     name: 'siblings',
     c1: 'dog', c2: 'cat',
-    expected: { shortestPath: 2, radaSimilarity: 1/3, resnikEdge: 4, wuPalmer: 0.5, pekarStaab: 1/3, simTBK: 0.5, zhong: 1 / Math.pow(2, 1) - 2 * (1 / (2 * Math.pow(2, 2))), leacockChodorow: Math.log(6)-Math.log(3), hirstStOnge: 5 },
+    expected: { shortestPath: 2, radaSimilarity: 1/3, resnikEdge: 4, wuPalmer: 0.5, pekarStaab: 1/3, simTBK: 0.5, zhong: 0.25, leacockChodorow: Math.log(6)-Math.log(3), hirstStOnge: 5 },
   },
   {
     name: 'cousins',
