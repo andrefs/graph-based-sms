@@ -18,10 +18,6 @@ export const zhong: MeasureFunction = (graph, concept1, concept2, options = {}) 
   const depth1 = getDepth(graph, concept1, options.predicates, edgeDirection);
   const depth2 = getDepth(graph, concept2, options.predicates, edgeDirection);
 
-  if (depth1 === 0 || depth2 === 0) {
-    return 0;
-  }
-
   // Find the deepest (most specific) common ancestor
   let bestDepthLCA = -1;
 
@@ -30,10 +26,6 @@ export const zhong: MeasureFunction = (graph, concept1, concept2, options = {}) 
     if (depthLCA > bestDepthLCA) {
       bestDepthLCA = depthLCA;
     }
-  }
-
-  if (bestDepthLCA <= 0) {
-    return 0;
   }
 
   // milestone(n) = (1/2) / k^l(n)  where l(n) is the depth of node n

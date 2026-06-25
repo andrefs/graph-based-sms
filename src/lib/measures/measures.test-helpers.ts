@@ -109,7 +109,7 @@ const legacyTestCases = [
   {
     name: 'grandparent-grandchild',
     c1: 'animal', c2: 'dog',
-    expected: { shortestPath: 2, radaSimilarity: 1/3, resnikEdge: 4, wuPalmer: 0, pekarStaab: 0, simTBK: 0, zhong: 0, leacockChodorow: Math.log(6)-Math.log(3), hirstStOnge: 6 },
+    expected: { shortestPath: 2, radaSimilarity: 1/3, resnikEdge: 4, wuPalmer: 0, pekarStaab: 0, simTBK: 0, zhong: 0.375, leacockChodorow: Math.log(6)-Math.log(3), hirstStOnge: 6 },
   },
   {
     name: 'siblings',
@@ -119,7 +119,7 @@ const legacyTestCases = [
   {
     name: 'cousins',
     c1: 'dog', c2: 'penguin',
-    expected: { shortestPath: 4, radaSimilarity: 1/5, resnikEdge: 2, wuPalmer: 0, pekarStaab: 0, simTBK: 0, zhong: 0, leacockChodorow: Math.log(6)-Math.log(5), hirstStOnge: 3 },
+    expected: { shortestPath: 4, radaSimilarity: 1/5, resnikEdge: 2, wuPalmer: 0, pekarStaab: 0, simTBK: 0, zhong: 0.75, leacockChodorow: Math.log(6)-Math.log(5), hirstStOnge: 3 },
   },
 ];
 
