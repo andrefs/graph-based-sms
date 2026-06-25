@@ -97,13 +97,15 @@ jiangConrath(graph, 'dog', 'cat', { ic }); // 2
 
 This package covers measures that can be calculated from the graph, with no additional semantic evidence necessary. These include path-based measures, where the strength of the relation is evaluated through the analysis of paths between the two concepts, their ancestors or the graph root; and feature-based measures in which the feature sets are derived from the graph, e.g. the sets of ancestors or siblings.
 
+**Note on measure types:** This package includes both **distance** measures (0 = identical, higher values = less similar) and **similarity** measures (higher values = more similar). Each measure is explicitly tagged below.
+
 ### Path-based measures
 
 This package implements well-known edge-based semantic similarity and relatedness measures from the literature.
 
-#### Shortest Path (Rada Distance)
+#### Shortest Path (Rada Distance) [DISTANCE]
 
-Rada et al. define the conceptual distance between two concepts based on the shortest path between them in a taxonomy:
+Rada et al. define the conceptual **distance** between two concepts based on the shortest path between them in a taxonomy:
 
 $$\mathrm{m}(c_1,c_2) = \mathrm{length}(\mathrm{sp}(c_1,c_2))$$
 
@@ -165,7 +167,7 @@ where:
 
 **Source:** Unnumbered equation, p. 775 in Slimani et al. (2003). Also in Equation (3.20), p. 90 in  in Harispe et al. (2015).
 
-#### Zhong
+#### Zhong [DISTANCE]
 
 Zhong et al. also take into account the notion of depth:
 
@@ -203,7 +205,7 @@ where:
 
 **Source:** Unnumbered equation in p.4 in Hirst & St-Onge (1998). Also Equation (2), p. 4 in Slimani (2013).
 
-#### Nguyen and Al-Mubaid
+#### Nguyen and Al-Mubaid [DISTANCE]
 
 This measure takes into account the depth of the taxonomy and the depth of the LCS.
 
@@ -234,9 +236,9 @@ where:
 
 ### Feature-based
 
-#### Batet et al.
+#### Batet et al. [DISTANCE]
 
-This measure considers that the number of shared *superconcepts* (ancestors) an indication of proximity, and the amount of non-shared *superconcepts* as an indication of distance. 
+This measure considers that the number of shared *superconcepts* (ancestors) an indication of proximity, and the amount of non-shared *superconcepts* as an indication of **distance**. 
 
 $$\mathrm{m(c_1,c_2) = -log_2 \frac{|T(c_1) \cup  T(c_2)|-|T(c_1)\cap T(c_2)|}{|T(c_1) \cup  T(c_2)|}}$$
 
@@ -246,9 +248,9 @@ where:
 
 **Source:** Equation (14) in p. 122 in Batet et al. (2011). Also Equation (5), p. 884 in McInnes et al. (2014).
 
-#### Sánchez et al.
+#### Sánchez et al. [DISTANCE]
 
-A measure of *dissimilarity* given by the cardinality of the set of differential features between both nodes:
+A measure of **dissimilarity** given by the cardinality of the set of differential features between both nodes:
 
 $$d(c_1,c_2) = log_2  \left(1+   \frac{|\phi(c_1) \backslash \phi(c_2)| +|\phi(c_2) \backslash \phi(c_1)|}{|\phi(c_1) \backslash \phi(c_2)| +|\phi(c_2) \backslash \phi(c_1)| + |\phi(c_1) \cap \phi(c_2)|} \right) $$
 
@@ -291,7 +293,7 @@ where:
 
 **Source:** Unnumbered equation on the sixth page in Lin (1998). Also Equation (17), p. 7721 in Sánchez et al. (2012); Equation (3.29), p. 94 in Harispe et al. (2015).
 
-#### Jiang and Conrath
+#### Jiang and Conrath [DISTANCE]
 
 Similar to Lin, this measure improves upon the Resnik IC measure by also including the nodes ICs.
 
