@@ -103,7 +103,7 @@ This package covers measures that can be calculated from the graph, with no addi
 
 This package implements well-known edge-based semantic similarity and relatedness measures from the literature.
 
-#### Shortest Path (Rada Distance) [DISTANCE]
+#### Shortest Path (Rada Distance)
 
 Rada et al. define the conceptual **distance** between two concepts based on the shortest path between them in a taxonomy:
 
@@ -165,9 +165,10 @@ where:
   - 1 when $c_1$ and $c_2$ are two concepts in neighborhood
 
 
-**Source:** Unnumbered equation, p. 775 in [16](#ref-16). Also in Equation (3.20), p. 90 in  in [6](#ref-6).
+**Source**: This measure was first published in an unnumbered equation, p. 775 in [16](#ref-16). This original formula has $PF = (1-\lambda)(\min(N_1,N_2)-N) + \lambda(|N_1-N_2|+1)^{-1}$, which gives $PF=0$ for all ancestor-descendant pairs ($\lambda=0$), contradicting the paper's own examples.
+In a later publication the authors provided an updated version, which is the one we used here, where $PF=1$ for $\lambda=0$: unnumbered equation in p. 6 in [22](#ref-22). Also Equations (11) and (12), p. 6 in [23](#ref-23).
 
-#### Zhong [DISTANCE]
+#### Zhong
 
 Zhong et al. also take into account the notion of depth, defining a **distance** measure:
 
@@ -205,7 +206,7 @@ where:
 
 **Source:** Unnumbered equation in p.4 in [9](#ref-9). Also Equation (2), p. 4 in [12](#ref-12).
 
-#### Nguyen and Al-Mubaid [DISTANCE]
+#### Nguyen and Al-Mubaid
 
 This **distance** measure takes into account the depth of the taxonomy and the depth of the LCS.
 
@@ -236,7 +237,7 @@ where:
 
 ### Feature-based
 
-#### Batet et al. [DISTANCE]
+#### Batet et al.
 
 This measure considers that the number of shared *superconcepts* (ancestors) an indication of proximity, and the amount of non-shared *superconcepts* as an indication of **distance**. 
 
@@ -248,7 +249,7 @@ where:
 
 **Source:** Equation (14) in p. 122 in [13](#ref-13). Also Equation (5), p. 884 in [11](#ref-11).
 
-#### Sánchez et al. [DISTANCE]
+#### Sánchez et al.
 
 A measure of **dissimilarity** given by the cardinality of the set of differential features between both nodes:
 
@@ -293,7 +294,7 @@ where:
 
 **Source:** Unnumbered equation on the sixth page in [21](#ref-21). Also Equation (17), p. 7721 in [18](#ref-18); Equation (3.29), p. 94 in [6](#ref-6).
 
-#### Jiang and Conrath [DISTANCE]
+#### Jiang and Conrath
 
 Similar to Lin, this **distance** measure improves upon the Resnik IC measure by also including the nodes ICs.
 
@@ -340,5 +341,5 @@ All measures accept an optional `ExtraOptions` object:
 - <a id="ref-19"></a>[19] P. Resnik, "Using Information Content to Evaluate Semantic Similarity in a Taxonomy," in Proceedings of the 14th International Joint Conference on Artificial Intelligence-Volume 1, 1995, pp. 448--453.
 - <a id="ref-20"></a>[20] J. J. Jiang and D. W. Conrath, "Semantic similarity based on corpus statistics and lexical taxonomy," in Proceedings of the 10th research on computational linguistics international conference, 1997, pp. 19--33.
 - <a id="ref-21"></a>[21] D. Lin, "An Information-Theoretic Definition of Similarity," in Proceedings of the Fifteenth International Conference on Machine Learning, 1998, pp. 296--304.
-
-[^1]: The formula in the original paper seems to have an error, so we here adapted it to match the description and examples later given in the paper.
+-  <a id="ref-22"></a>[22] T. Slimani, B. BenYaghlane, and K. Mellouli, "Une extension de mesure de similarité entre les concepts d'une ontologie," in International Conference on Sciences of Electronic, Technologies of Information and Telecommunications, pp. 1–10, 2007.
+-  <a id="ref-23"></a>[23] A. N. Ngom, "Étude des mesures de similarité sémantique basées sur les arcs," in CORIA, pp. 535–544, 2015.
