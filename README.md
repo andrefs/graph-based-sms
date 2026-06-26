@@ -97,7 +97,7 @@ jiangConrath(graph, 'dog', 'cat', { ic }); // 2
 
 This package covers measures that can be calculated from the graph, with no additional semantic evidence necessary. These include path-based measures, where the strength of the relation is evaluated through the analysis of paths between the two concepts, their ancestors or the graph root; and feature-based measures in which the feature sets are derived from the graph, e.g. the sets of ancestors or siblings.
 
-**Note on measure types:** This package includes both **distance** measures (0 = identical, higher values = less similar) and **similarity** measures (higher values = more similar). Each measure is explicitly tagged below.
+**Note on measure types:** This package includes both **distance** measures (0 = identical, higher values = less similar) and **similarity** measures (higher values = more similar). Each measure's description indicates its type below.
 
 ### Path-based measures
 
@@ -169,7 +169,7 @@ where:
 
 #### Zhong [DISTANCE]
 
-Zhong et al. also take into account the notion of depth:
+Zhong et al. also take into account the notion of depth, defining a **distance** measure:
 
 $$\mathrm{m(c_1,c_2)} = 2 \cdot \frac{1}{2k^{\mathrm{depth}(LCS(c_1,c_2))}} - \frac{1}{2k^{\mathrm{depth}(c_1)}}  - \frac{1}{2k^{\mathrm{depth}(c_2)}}$$
 
@@ -207,7 +207,7 @@ where:
 
 #### Nguyen and Al-Mubaid [DISTANCE]
 
-This measure takes into account the depth of the taxonomy and the depth of the LCS.
+This **distance** measure takes into account the depth of the taxonomy and the depth of the LCS.
 
 $$\mathrm{m(c_1,c_2) = log(2+(sp(c_1,c_2)-1)*(D-d))}$$
 
@@ -295,7 +295,7 @@ where:
 
 #### Jiang and Conrath [DISTANCE]
 
-Similar to Lin, this measure improves upon the Resnik IC measure by also including the nodes ICs.
+Similar to Lin, this **distance** measure improves upon the Resnik IC measure by also including the nodes ICs.
 
 $$m(c_1,c_2) = IC(c_1) + IC(c_2) - 2 \cdot \mathrm{resnik_{IC}}(c_1,c_2)$$
 
