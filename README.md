@@ -71,8 +71,8 @@ batet(graph, 'dog', 'cat'); // 1
 // Zhong (requires k)
 zhong(graph, 'dog', 'cat', { kZhong: 2 }); // 0.125
 
-// simTBK (requires maxDepth)
-simTBK(graph, 'dog', 'cat', { maxDepth: 3 }); // 0.5
+// simTBK
+simTBK(graph, 'dog', 'cat'); // 0.5
 
 // Li et al. (optional alpha and beta)
 li(graph, 'dog', 'cat'); // 0.283...
@@ -309,7 +309,7 @@ All measures accept an optional `ExtraOptions` object:
 
 - `edgeDirection?: 'parentToChild' | 'childToParent'` - Direction of edges in the taxonomy. Default: `'parentToChild'`.
 - `predicates?: string | string[]` - Filter edges by predicate(s)
-- `maxDepth?: number` - Maximum depth of the taxonomy (required for Resnik Edge and Leacock-Chodorow)
+- `maxDepth?: number` - Maximum depth of the taxonomy (required for Resnik Edge, Leacock-Chodorow, and Nguyen-AlMubaid)
 - `ic?: Map<string, number>` - Information content values for nodes (required for Resnik IC, Lin, and Jiang-Conrath)
 - `kZhong?: number` - Depth factor for Zhong (default: 2)
 - `alpha?: number` - Distance weight for Li et al. (default: 0.2)
