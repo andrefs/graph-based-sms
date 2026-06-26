@@ -109,7 +109,7 @@ Rada et al. define the conceptual **distance** between two concepts based on the
 
 $$\mathrm{m}(c_1,c_2) = \mathrm{length}(\mathrm{sp}(c_1,c_2))$$
 
-**Source:** Definition 1, p. 20 in [3](#ref-3). Also Equation (1), p. 2 in [2](#ref-2); Equation (3.12), p. 88 in [6](#ref-6).
+**Source:** Definition 1, p. 20 in [[3]](#ref-3). Also Equation (1), p. 2 in [[2]](#ref-2); Equation (3.12), p. 88 in [[6]](#ref-6).
 
 #### Rada Similarity
 
@@ -117,7 +117,7 @@ Often Rada's distance is converted to a similarity measure using the formula:
 
 $$\mathrm{m}(c_1,c_2) = \frac{1}{1 + \mathrm{length}(\mathrm{sp}(c_1,c_2))}$$
 
-**Source:** Equation (1), p. 334 in [4](#ref-4). Also Equation (1), p. 6 in [5](#ref-5); Equation (3.13), p. 88 in [6](#ref-6).
+**Source:** Equation (1), p. 334 in [[4]](#ref-4). Also Equation (1), p. 6 in [[5]](#ref-5); Equation (3.13), p. 88 in [[6]](#ref-6).
 
 #### Resnik (Edge)
 
@@ -129,7 +129,7 @@ where:
 - $\mathrm{D}$ is the depth of the taxonomy
 - $\mathrm{sp}(c1,c2)$ is the shortest path between concepts $c1$ and $c2$
 
-**Source:** Equation (5), p. 101 in [1](#ref-1). Also Equation (3.14), p. 89 in [6](#ref-6).
+**Source:** Equation (5), p. 101 in [[1]](#ref-1). Also Equation (3.14), p. 89 in [[6]](#ref-6).
 
 #### Wu-Palmer
 
@@ -137,7 +137,7 @@ Wu and Palmer define a similarity measure based on the depth of the least common
 
 $$\mathrm{m}(c_1,c_2) = \frac{2 \times \mathrm{depth}(LCS(c_1,c_2))}{2 \times \mathrm{depth}(LCS(c_1,c_2)) + \mathrm{length}(\mathrm{sp}(c_1,LCS(c_1,c_2))) + \mathrm{length}(\mathrm{sp}(c_2,LCS(c_1,c_2)))}$$
 
-**Source:** Unnumbered equation in p. 136 in [7](#ref-7). Also Equation (3), p. 3 in [2](#ref-2); Equation (3.16), p. 89 in [6](#ref-6).
+**Source:** Unnumbered equation in p. 136 in [[7]](#ref-7). Also Equation (3), p. 3 in [[2]](#ref-2); Equation (3.16), p. 89 in [[6]](#ref-6).
 
 #### Pekar-Staab
 
@@ -145,7 +145,7 @@ A variation of Wu-Palmer with different normalization:
 
 $$\mathrm{m(c_1,c_2)} = \frac{depth(LCS(c_1,c_2))}{\mathrm{length}(\mathrm{sp}(c_1,LCS(c_1,c_2))) + \mathrm{length}(\mathrm{sp}(c_2,LCS(c_1,c_2))) + depth(LCS(c_1,c_2))}$$
 
-**Source:** Equation (2) in the third page in [14](#ref-14). Also in Equation (3.17), p. 89 in [6](#ref-6).
+**Source:** Equation (2) in the third page in [[14]](#ref-14). Also in Equation (3.17), p. 89 in [[6]](#ref-6).
 
 #### simTBK
 
@@ -157,7 +157,7 @@ where:
 
 - the first multiplying factor is the Wu-Palmer function
 - $N_1$, $N_2$ and $N$ are, respectively, the depths of nodes $c_1$, $c_2$ and of their LCS
-- $$PF$$ is the penalization factor[^1] given by $$PF(c_1,c_2) =$$
+- $$PF$$ is the penalization factor given by $$PF(c_1,c_2) =$$
   - 1, if $$\lambda = 0$$
   - $$\frac{1}{|N1-N2|+1}$$, if $$\lambda = 1$$
 - $$\lambda$$ is 
@@ -165,8 +165,8 @@ where:
   - 1 when $c_1$ and $c_2$ are two concepts in neighborhood
 
 
-**Source**: This measure was first published in an unnumbered equation, p. 775 in [16](#ref-16). This original formula has $PF = (1-\lambda)(\min(N_1,N_2)-N) + \lambda(|N_1-N_2|+1)^{-1}$, which gives $PF=0$ for all ancestor-descendant pairs ($\lambda=0$), contradicting the paper's own examples.
-In a later publication the authors provided an updated version, which is the one we used here, where $PF=1$ for $\lambda=0$: unnumbered equation in p. 6 in [22](#ref-22). Also Equations (11) and (12), p. 6 in [23](#ref-23).
+**Source**: This measure was first published in an unnumbered equation, p. 775 in [[16]](#ref-16). This original formula has $PF = (1-\lambda)(\min(N_1,N_2)-N) + \lambda(|N_1-N_2|+1)^{-1}$, which gives $PF=0$ for all ancestor-descendant pairs ($\lambda=0$), contradicting the paper's own examples.
+In a later publication the authors provided an updated version, which is the one we used here, where $PF=1$ for $\lambda=0$: unnumbered equation in p. 6 in [[22]](#ref-22). Also Equations (11) and (12), p. 6 in [[23]](#ref-23).
 
 #### Zhong
 
@@ -178,7 +178,7 @@ where:
 
 - $k : {k\in \mathbb{R}∣k>1}$ defines the contribution of the depth
 
-**Source:** Unnumbered equation on the fifth page in [15](#ref-15). Also Equation (3.18), p. 90 in [6](#ref-6).
+**Source:** Unnumbered equation on the fifth page in [[15]](#ref-15). Also Equation (3.18), p. 90 in [[6]](#ref-6).
 
 
 #### Leacock-Chodorow
@@ -191,7 +191,7 @@ where:
 - $D$ is the depth of the taxonomy
 - $N$ is the cardinality of the union of sets of nodes involved in the shortest paths $sp(c_1, LCA(c_1,c_2))$ and $sp(c_2, LCA(c_1,c_2))$
 
-**Source:** Unnumbered equation in p. 275 in [8](#ref-8). Also Equation (3.15), p. 89 in [6](#ref-6).
+**Source:** Unnumbered equation in p. 275 in [[8]](#ref-8). Also Equation (3.15), p. 89 in [[6]](#ref-6).
 
 #### Hirst-St-Onge
 
@@ -204,7 +204,7 @@ where:
 - $k$ is a constant for weighting direction changes (default: 1)
 - $d$ is the number of direction changes in the path
 
-**Source:** Unnumbered equation in p.4 in [9](#ref-9). Also Equation (2), p. 4 in [12](#ref-12).
+**Source:** Unnumbered equation in p.4 in [[9]](#ref-9). Also Equation (2), p. 4 in [[12]](#ref-12).
 
 #### Nguyen and Al-Mubaid
 
@@ -217,7 +217,7 @@ where:
 - $D$ is the depth of the taxonomy
 - $d$ is the depth of $LCS(c_1, c_2)$
 
-**Source:** Equation (1) in p.625 in [10](#ref-10). Also Equation (4), p. 884 in [11](#ref-11).
+**Source:** Equation (1) in p.625 in [[10]](#ref-10). Also Equation (4), p. 884 in [[11]](#ref-11).
 
 #### Li et al.
 
@@ -232,7 +232,7 @@ where:
 - $$\beta > 0$$ is used to tune the depth factor $$df$$
 - $$\alpha \geqslant 0$$ controls the importance of the taxonomic distance
 
-**Source:** Equation (5), p. 14 in [17](#ref-17). Also Equation (3.19), p. 90 in [6](#ref-6).
+**Source:** Equation (5), p. 14 in [[17]](#ref-17). Also Equation (3.19), p. 90 in [[6]](#ref-6).
 
 
 ### Feature-based
@@ -247,7 +247,7 @@ where:
 
 - $T(c_i)$ is the set of superconcepts of $c_i$
 
-**Source:** Equation (14) in p. 122 in [13](#ref-13). Also Equation (5), p. 884 in [11](#ref-11).
+**Source:** Equation (14) in p. 122 in [[13]](#ref-13). Also Equation (5), p. 884 in [[11]](#ref-11).
 
 #### Sánchez et al.
 
@@ -260,7 +260,7 @@ where:
 - $$\phi(a)$$ are the *taxonomical features* (i.e. the subsumers) of node $$a$$
 - $$\phi(a) \backslash \phi(b)$$ represents the subsumers of $$a$$ that are not subsumers of $$b$$
 
-**Source:** Equation (24), p. 7723 in [18](#ref-18).
+**Source:** Equation (24), p. 7723 in [[18]](#ref-18).
 
 ### Information-content-based
 
@@ -279,7 +279,7 @@ where:
 
 In practice, this is often simplified as $$m(c_1,c_2) = IC(LCS(c_1,c_2))$$, with $$IC$$ being a function that maps each node to their information content value.
 
-**Source:** Equation (1), p. 449 in [19](#ref-19). Also Equation (1), p. 97 in [1](#ref-1); Equation (16), p. 7721 in [18](#ref-18).
+**Source:** Equation (1), p. 449 in [[19]](#ref-19). Also Equation (1), p. 97 in [[1]](#ref-1); Equation (16), p. 7721 in [[18]](#ref-18).
 
 #### Lin
 
@@ -292,7 +292,7 @@ where:
 - $$\mathrm{resnik_{IC}}(c_1,c_2)$$ is the IC-based measure from Resnik
 - $$IC(a)$$ is the information content value of node $$a$$
 
-**Source:** Unnumbered equation on the sixth page in [21](#ref-21). Also Equation (17), p. 7721 in [18](#ref-18); Equation (3.29), p. 94 in [6](#ref-6).
+**Source:** Unnumbered equation on the sixth page in [[21]](#ref-21). Also Equation (17), p. 7721 in [[18]](#ref-18); Equation (3.29), p. 94 in [[6]](#ref-6).
 
 #### Jiang and Conrath
 
@@ -300,7 +300,7 @@ Similar to Lin, this **distance** measure improves upon the Resnik IC measure by
 
 $$m(c_1,c_2) = IC(c_1) + IC(c_2) - 2 \cdot \mathrm{resnik_{IC}}(c_1,c_2)$$
 
-**Source:**  Equation (15), p. 26 in [20](#ref-20). Also Equation (18), p. 7721 in [18](#ref-18); Equation (3.30), p. 94 in [6](#ref-6).
+**Source:**  Equation (15), p. 26 in [[20]](#ref-20). Also Equation (18), p. 7721 in [[18]](#ref-18); Equation (3.30), p. 94 in [[6]](#ref-6).
 
 
 ## Options
