@@ -1,5 +1,5 @@
 import type { EdgeDirection, MeasureFunction } from '../types';
-import { getDepth, findLCAs, getAncestorSet } from '../helpers';
+import { getDepth, findLCAs, getAncestorSet, getPathLengthToAncestor } from '../helpers';
 import { MultiDirectedGraph } from 'graphology';
 
 export function computeLambda(
@@ -28,16 +28,16 @@ export const simTBK: MeasureFunction = (graph, concept1, concept2, options = {})
     return 0;
   }
 
-  const depth1 = getDepth(graph, concept1, options.predicates, edgeDirection);
-  const depth2 = getDepth(graph, concept2, options.predicates, edgeDirection);
-
   const lambda = computeLambda(graph, concept1, concept2, options.predicates, edgeDirection);
   let bestScore = 0;
 
   for (const lca of lcas) {
     const depthLCA = getDepth(graph, lca, options.predicates, edgeDirection);
-    const N1 = depth1;
-    const N2 = depth2;
+    const path1 = getPathLengthToAncestor(graph, concept1, lca, options.predicates, edgeDirection);
+    const path2 = getPathLengthToAncestor(graph, concept2, lca, options.predicates, edgeDirection);
+    if (path1 === null || path2 === null) continue;
+    const N1 = depthLCA + path1;
+    const N2 = depthLCA + path2;
     const N = depthLCA;
 
     const wpDenominator = N1 + N2;
